@@ -4,11 +4,12 @@ using Xamarin.Forms;
 
 namespace SwarmSharp
 {
-	public class App : Application
+	public partial class App : Application
 	{
 		public App ()
 		{
-			// The root page of your application
+			InitializeComponent ();
+
 			MainPage = new ContentPage {
 				Content = new StackLayout {
 					VerticalOptions = LayoutOptions.Center,
