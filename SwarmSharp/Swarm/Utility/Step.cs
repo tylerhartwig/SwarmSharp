@@ -5,7 +5,7 @@ namespace SwarmSharp
 	public class Step
 	{
 		public Vector Direction;
-		public int Size;
+		public int Size = 2;
 
 		public Step () { }
 	}

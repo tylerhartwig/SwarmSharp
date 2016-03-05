@@ -9,9 +9,7 @@ namespace SwarmSharp
 
 		private List<IAgentRule> rules;
 
-		public Agent ()
-		{
-		}
+		public Agent () { }
 	}
 }
 
