@@ -22,6 +22,7 @@ namespace SwarmSharp
 			Point midpoint = PointUtility.Midpoint (buddyOne.Position, buddyTwo.Position);
 			Step step = new Step ();
 			step.Direction = midpoint - owner.Position;
+			return step;
 		}
 
 		#endregion
