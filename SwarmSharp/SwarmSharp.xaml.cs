@@ -11,11 +11,18 @@ namespace SwarmSharp
 		{
 			InitializeComponent ();
 
-			using (var surface = SKSurface.Create(640, 480, SKColorType.N_32, SKAlphaType.Premul)){
-				SKCanvas canvas = surface.Canvas;
+
+			MainPage = new ContentPage {
+				Content = new SkiaView(Xamagon)
+			};
+		}
+
+		void Xamagon(SKCanvas canvas, int width, int height){
+//			using (var surface = SKSurface.Create(width, height, SKColorType.N_32, SKAlphaType.Premul)){
+//				canvas = surface.Canvas;
 
 				// clear the canvas / fill with white
-				canvas.Clear (SKColors.White);
+			canvas.Clear (SKColors.Aqua);
 
 				// set up drawing tools
 				using (var paint = new SKPaint ()) {
@@ -44,19 +51,8 @@ namespace SwarmSharp
 						canvas.DrawPath (path, paint);
 					}
 				}
-			}
-
-			MainPage = new ContentPage {
-				Content = new StackLayout {
-					VerticalOptions = LayoutOptions.Center,
-					Children = {
-						new Label {
-							HorizontalTextAlignment = TextAlignment.Center,
-							Text = "Welcome to Xamarin Forms!"
-						}
-					}
-				}
-			};
+//			}
+			//return canvas;
 		}
 
 		protected override void OnStart ()

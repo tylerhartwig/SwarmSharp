@@ -34,6 +34,11 @@
     <Compile Include="SwarmSharp.xaml.cs">
       <DependentUpon>SwarmSharp.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomViews\Interfaces\ISkiaViewController.cs" />
+    <Compile Include="CustomViews\Views\SkiaView.cs" />
+    <Compile Include="Pages\SwarmFieldPage.xaml.cs">
+      <DependentUpon>SwarmFieldPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.1.0.6524\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.1.0.6524\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
@@ -58,5 +63,14 @@
     <EmbeddedResource Include="SwarmSharp.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="Pages\SwarmFieldPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="CustomViews\" />
+    <Folder Include="CustomViews\Interfaces\" />
+    <Folder Include="CustomViews\Views\" />
+    <Folder Include="Pages\" />
   </ItemGroup>
 </Project>
