@@ -1,10 +1,12 @@
 ﻿using System;
 
 using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 using SkiaSharp;
 using System.Collections.Generic;
 using System.Diagnostics;
 
+[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace SwarmSharp
 {
 	public partial class App : Application
@@ -12,7 +14,6 @@ namespace SwarmSharp
 		public App ()
 		{
 			InitializeComponent ();
-
 
 			MainPage = new SwarmFieldPage ();
 		}
