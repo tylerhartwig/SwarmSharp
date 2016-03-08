@@ -13,6 +13,7 @@ namespace SwarmSharp.iOS
 
 		public NativeSkiaView (SkiaView skiaView) {
 			this.skiaView = skiaView;
+			this.skiaView.SetRedraw (() => this.SetNeedsDisplay());
 		}
 
 		public override void Draw(CGRect rect){
@@ -45,6 +46,7 @@ namespace SwarmSharp.iOS
 				if (buff != IntPtr.Zero)
 					System.Runtime.InteropServices.Marshal.FreeCoTaskMem (buff);
 			}
+
 		}
 
 		public override void LayoutSubviews (){

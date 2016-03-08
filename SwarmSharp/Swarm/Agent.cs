@@ -18,9 +18,10 @@ namespace SwarmSharp
 		}
 
 		public void TakeStep (int maxWidth, int maxHeight) {
-			if(nextStep != null)
+			if (nextStep != null){
 				Position += nextStep;
-			nextStep = null;
+			}
+		//	nextStep = null;
 			if (Position.X > maxWidth)
 				Position.X = maxWidth;
 			else if (Position.X < 0)

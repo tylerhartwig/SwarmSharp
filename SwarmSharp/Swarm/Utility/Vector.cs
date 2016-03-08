@@ -4,8 +4,30 @@ namespace SwarmSharp
 {
 	public class Vector
 	{
-		public double X { get; set; }
-		public double Y { get; set; }
+		private double x;
+		public double X { 
+			get {
+				if (Double.IsNaN (x))
+					return 0;
+				else
+					return x;
+			}
+			set {
+				x = value;
+			}
+		}
+		private double y;
+		public double Y { 
+			get{
+				if (Double.IsNaN (y))
+					return 0;
+				else
+					return y;
+			}
+			set{
+				y = value;
+			}
+		}
 
 		public Vector(double x = 0, double y = 0) {
 			this.X = x;

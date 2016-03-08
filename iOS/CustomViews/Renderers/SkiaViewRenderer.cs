@@ -14,6 +14,7 @@ namespace SwarmSharp.iOS
 
 			if (Control == null)
 				SetNativeControl (new NativeSkiaView (Element));
+
 		}
 
 	}
