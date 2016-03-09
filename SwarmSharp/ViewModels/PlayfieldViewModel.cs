@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using SkiaSharp;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace SwarmSharp
 {
@@ -22,6 +23,18 @@ namespace SwarmSharp
 			set { SetProperty (ref needRedraw, value); }
 		}
 
+		private bool isPlaying;
+		public bool IsPlaying {
+			get { return isPlaying; }
+			set { SetProperty (ref isPlaying, value); }
+		}
+
+		private Command _togglePlay;
+		public Command TogglePlay {
+			get { return _togglePlay; }
+			set { SetProperty (ref _togglePlay, value); }
+		}
+
 		public int Width { 
 			get { return playfield.Width; } 
 			set { playfield.Width = value; }
@@ -35,12 +48,10 @@ namespace SwarmSharp
 		public PlayfieldViewModel () {
 			int numAgents = 1000;
 			NeedRedraw = false;
-
+			IsPlaying = false;
 			playfield = new Playfield ();
 			RenderAction = new Action<SKCanvas, int, int> (render);
-			//playfield.Width = (int)skiaView.Width;
-			//playfield.Height = (int)skiaView.Height;
-
+			TogglePlay = new Command (async () => await togglePlay());
 
 			var random = new Random ();
 			var agents = new List<Agent> ();
@@ -62,11 +73,26 @@ namespace SwarmSharp
 			playfield.RePosition ();
 		}
 
-		public Task StartPlayAsync (){
-			return Task.Run(() => {
+		public Task MoveAsync (){
+			return Task.Run (() => {
 				playfield.Iterate ();
 				NeedRedraw = true;
 			});
+		}
+
+		public async Task PlayAsync() {
+			while (IsPlaying) {
+				await MoveAsync ();
+			}
+		}
+
+		private async Task togglePlay(){
+			if (IsPlaying) {
+				IsPlaying = false;
+			} else {
+				IsPlaying = true;
+				await PlayAsync ();
+			}
 		}
 
 		void render(SKCanvas canvas, int width, int height){
