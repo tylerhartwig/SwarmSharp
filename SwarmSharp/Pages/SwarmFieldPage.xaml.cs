@@ -19,9 +19,10 @@ namespace SwarmSharp
 			InitializeComponent ();
 		}
 
-		public void ButtonClicked(object sender, EventArgs args){
-			vm.Play ();
-			Debug.WriteLine (DebugView.NeedRedraw);
+		public async void ButtonClicked(object sender, EventArgs args){
+			for (int i = 0; i < 1000; i++) {
+				await vm.StartPlayAsync ();
+			}
 		}
 
 		protected override void OnAppearing ()

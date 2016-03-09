@@ -44,23 +44,23 @@ namespace SwarmSharp
 				DrawCallback (canvas, (int) Width, (int) Height);
 		}
 
-		protected override void OnBindingContextChanged ()
-		{
-			base.OnBindingContextChanged ();
-
-			if (BindingContext is PlayfieldViewModel) {
-				((PlayfieldViewModel)BindingContext).Width = (int)Width;
-				((PlayfieldViewModel)BindingContext).Height = (int)Height;
-				((PlayfieldViewModel)BindingContext).Reset ();
-			}
-		}
-
 		protected override void OnPropertyChanged (string propertyName)
 		{
 			base.OnPropertyChanged (propertyName);
 
-			System.Diagnostics.Debug.WriteLine (propertyName + " Property changed!");
-			Redraw ();
+			switch (propertyName) {
+			case nameof(NeedRedraw):
+				Redraw ();
+				break;
+			case nameof(Width):
+			case nameof(Height):
+				if (BindingContext is PlayfieldViewModel) {
+					((PlayfieldViewModel)BindingContext).Width = (int)Width;
+					((PlayfieldViewModel)BindingContext).Height = (int)Height;
+					((PlayfieldViewModel)BindingContext).Reset ();
+				}
+				break;
+			}
 		}
 	}
 }

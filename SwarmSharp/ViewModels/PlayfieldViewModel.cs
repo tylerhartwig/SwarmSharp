@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Collections.Generic;
 using SkiaSharp;
+using System.Threading.Tasks;
 
 namespace SwarmSharp
 {
@@ -40,7 +41,6 @@ namespace SwarmSharp
 			//playfield.Width = (int)skiaView.Width;
 			//playfield.Height = (int)skiaView.Height;
 
-			Debug.WriteLine ("Width height: {0}, {1}", playfield.Width, playfield.Height);
 
 			var random = new Random ();
 			var agents = new List<Agent> ();
@@ -62,11 +62,12 @@ namespace SwarmSharp
 			playfield.RePosition ();
 		}
 
-		public void Play() {
-			playfield.Iterate ();
-			NeedRedraw = true;
+		public Task StartPlayAsync (){
+			return Task.Run(() => {
+				playfield.Iterate ();
+				NeedRedraw = true;
+			});
 		}
-
 
 		void render(SKCanvas canvas, int width, int height){
 			canvas.Clear (SKColors.Green);
