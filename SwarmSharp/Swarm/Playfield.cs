@@ -17,6 +17,18 @@ namespace SwarmSharp
 			Groups.Add (group);
 		}
 
+		public void RePosition (){
+			var random = new Random ();
+			foreach (var group in Groups) {
+				foreach (var agent in group) {
+					if (Width != 0)
+						agent.Position.X = random.Next () % Width;
+					if (Height != 0)
+						agent.Position.Y = random.Next () % Height;
+				}
+			}
+		}
+
 		public void Iterate(){
 			foreach (var group in Groups) {
 				foreach (var agent in group) {
