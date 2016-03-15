@@ -5,20 +5,22 @@ namespace SwarmSharp
 	public class Step
 	{
 		public Vector Direction;
-		public int Size = 2;
-		public int X {
+		public double Size = 0.25;
+		public double X {
 			get {
-				return (int)(Direction.X * Size);
+				return (Direction.X * Size);
 			}
 		}
 
-		public int Y {
+		public double Y {
 			get {
-				return (int)(Direction.Y * Size);
+				return (Direction.Y * Size);
 			}
 		}
 
-		public Step () { }
+		public Step () {
+			Direction = new Vector ();
+		}
 	}
 }
 

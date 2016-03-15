@@ -2,15 +2,15 @@
 
 namespace SwarmSharp
 {
-	public class Point
+	public class Point : IEquatable<Point>
 	{
-		public Point(int x = 0, int y = 0) {
+		public Point(double x = 0, double y = 0) {
 			this.X = x;
 			this.Y = y;
 		}
 
-		public int X { get; set; }
-		public int Y { get; set; }
+		public double X { get; set; }
+		public double Y { get; set; }
 
 		public static Vector operator-(Point one, Point two) {
 			var vector = new Vector (one.X - two.X, one.Y - two.Y);
@@ -24,6 +24,18 @@ namespace SwarmSharp
 			newPoint.Y += step.Y;
 			return newPoint;
 		}
+
+		#region IEquatable implementation
+
+		public bool Equals (Point other)
+		{
+			if (PointUtility.Distance(this, other) < 2.0)
+				return true;
+			else
+				return false;
+		}
+
+		#endregion
 	}
 }
 
