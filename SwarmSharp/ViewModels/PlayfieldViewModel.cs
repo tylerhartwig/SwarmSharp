@@ -17,12 +17,6 @@ namespace SwarmSharp
 			set { SetProperty (ref renderAction, value); }
 		}
 
-		private bool needRedraw;
-		public bool NeedRedraw {
-			get { return needRedraw; }
-			set { SetProperty (ref needRedraw, value); }
-		}
-
 		private bool isPlaying;
 		public bool IsPlaying {
 			get { return isPlaying; }
@@ -47,7 +41,6 @@ namespace SwarmSharp
 
 		public PlayfieldViewModel () {
 			int numAgents = 1000;
-			NeedRedraw = false;
 			IsPlaying = false;
 			playfield = new Playfield ();
 			RenderAction = new Action<SKCanvas, int, int> (render);
@@ -73,16 +66,9 @@ namespace SwarmSharp
 			playfield.RePosition ();
 		}
 
-		public Task MoveAsync (){
-			return Task.Run (() => {
-				playfield.Iterate ();
-				NeedRedraw = true;
-			});
-		}
-
 		public async Task PlayAsync() {
 			while (IsPlaying) {
-				await MoveAsync ();
+				await Task.Run (() => playfield.Iterate ());
 			}
 		}
 
@@ -106,8 +92,8 @@ namespace SwarmSharp
 					foreach (var group in playfield.Groups) {
 						foreach (var agent in group) {
 							using (var path = new SKPath ()) {
-								int X = agent.Position.X;
-								int Y = agent.Position.Y;
+								int X = (int)agent.Position.X;
+								int Y = (int)agent.Position.Y;
 								path.MoveTo (X, Y);
 								path.LineTo (X + 5, Y);
 								path.LineTo (X + 5, Y + 5);
@@ -121,7 +107,6 @@ namespace SwarmSharp
 					}
 				}
 			}
-			NeedRedraw = false;
 		}
 	}
 }

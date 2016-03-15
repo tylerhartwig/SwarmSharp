@@ -9,7 +9,7 @@
 					  VerticalOptions="FillAndExpand"
 					  HorizontalOptions="FillAndExpand"
 					  DrawCallback="{Binding RenderAction}"
-					  NeedRedraw="{Binding NeedRedraw}" />
+					  Drawing="{Binding IsPlaying}" />
 
 			<Button x:Name="DebugButton" Text="Play!"
 					Command="{Binding TogglePlay}" />

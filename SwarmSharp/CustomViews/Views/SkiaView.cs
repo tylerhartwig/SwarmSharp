@@ -1,6 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 using SkiaSharp;
+using System.Threading.Tasks;
 
 namespace SwarmSharp
 {
@@ -9,12 +10,12 @@ namespace SwarmSharp
 		public static readonly BindableProperty DrawCallbackProperty = 
 			BindableProperty.Create(nameof(DrawCallback), typeof(Action<SKCanvas, int, int>), typeof(SkiaView), null);
 
-		public static readonly BindableProperty NeedRedrawProperty = 
-			BindableProperty.Create(nameof(NeedRedraw), typeof(bool), typeof(SkiaView), false);
+		public static readonly BindableProperty DrawingProperty = 
+			BindableProperty.Create(nameof(Drawing), typeof(bool), typeof(SkiaView), false);
 
-		public bool NeedRedraw {
-			get { return (bool)GetValue (NeedRedrawProperty); }
-			set { SetValue (NeedRedrawProperty, value); }
+		public bool Drawing {
+			get { return (bool)GetValue (DrawingProperty); }
+			set { SetValue (DrawingProperty, value); }
 		}
 
 		public Action<SKCanvas, int, int> DrawCallback {
@@ -34,6 +35,12 @@ namespace SwarmSharp
 			this.onRedrawCallback = recallCallback;
 		}
 
+		public async Task StartDrawing(){
+			while (Drawing) {
+				await Task.Run(() => Redraw ());
+			}
+		}
+
 		public void Redraw(){
 			Device.BeginInvokeOnMainThread (() =>
 				onRedrawCallback ());
@@ -44,13 +51,13 @@ namespace SwarmSharp
 				DrawCallback (canvas, (int) Width, (int) Height);
 		}
 
-		protected override void OnPropertyChanged (string propertyName)
+		protected override async void OnPropertyChanged (string propertyName)
 		{
 			base.OnPropertyChanged (propertyName);
 
 			switch (propertyName) {
-			case nameof(NeedRedraw):
-				Redraw ();
+			case nameof(Drawing):
+				await StartDrawing ();
 				break;
 			case nameof(Width):
 			case nameof(Height):
