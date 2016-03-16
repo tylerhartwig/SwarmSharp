@@ -11,7 +11,7 @@
 					  DrawCallback="{Binding RenderAction}"
 					  Drawing="{Binding IsPlaying}" />
 
-			<Button x:Name="DebugButton" Text="Play!"
+		<Button Text="Play!"
 					Command="{Binding TogglePlay}" />
 		</StackLayout>
 	</ContentPage.Content>
