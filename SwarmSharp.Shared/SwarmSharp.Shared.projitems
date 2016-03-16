@@ -9,6 +9,6 @@
     <Import_RootNamespace>SwarmSharp.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)MyClass.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedGLEngine.cs" />
   </ItemGroup>
 </Project>

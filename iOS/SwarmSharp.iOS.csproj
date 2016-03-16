@@ -94,6 +94,7 @@
     <Reference Include="SkiaSharp">
       <HintPath>..\packages\SkiaSharp.1.49.1.0\lib\XamariniOS\SkiaSharp.dll</HintPath>
     </Reference>
+    <Reference Include="OpenTK-1.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SwarmSharp\SwarmSharp.csproj">
@@ -118,6 +119,7 @@
     <Compile Include="CustomViews\Views\NativeSkiaView.cs" />
     <Compile Include="CustomViews\Renderers\SkiaViewRenderer.cs" />
   </ItemGroup>
+  <Import Project="..\SwarmSharp.Shared\SwarmSharp.Shared.projitems" Label="Shared" Condition="Exists('..\SwarmSharp.Shared\SwarmSharp.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.1.0.6524\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.1.0.6524\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
   <ItemGroup>
