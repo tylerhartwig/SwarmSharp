@@ -40,7 +40,7 @@ namespace SwarmSharp
 		}
 
 		public PlayfieldViewModel () {
-			int numAgents = 1000;
+			int numAgents = 100000;
 			IsPlaying = false;
 			playfield = new Playfield ();
 			RenderAction = new Action<SKCanvas, int, int> (render);
@@ -54,7 +54,7 @@ namespace SwarmSharp
 			}
 			var agentArray = agents.ToArray ();
 			foreach (var agent in agentArray) {
-				var rule = new BuddyBuddy (agent, agentArray [random.Next () % numAgents], agentArray [random.Next () % numAgents]);
+				var rule = new BullyProtector (agent, agentArray [random.Next () % numAgents], agentArray [random.Next () % numAgents]);
 				agent.AddRule (rule);
 			}
 			playfield.AddGroup (agentArray);
@@ -95,9 +95,9 @@ namespace SwarmSharp
 								int X = (int)agent.Position.X;
 								int Y = (int)agent.Position.Y;
 								path.MoveTo (X, Y);
-								path.LineTo (X + 5, Y);
-								path.LineTo (X + 5, Y + 5);
-								path.LineTo (X, Y + 5);
+								path.LineTo (X + 2, Y);
+								path.LineTo (X + 2, Y + 2);
+								path.LineTo (X, Y + 2);
 								path.Close ();
 
 								// draw the Xamagon path

@@ -5,7 +5,7 @@ namespace SwarmSharp
 	public class Step
 	{
 		public Vector Direction;
-		public double Size = 0.25;
+		public double Size = 0.75;
 		public double X {
 			get {
 				return (Direction.X * Size);
