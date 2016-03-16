@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwarmSharp.iOS", "iOS\Swarm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwarmSharp.Droid", "Droid\SwarmSharp.Droid.csproj", "{E5FD262D-8ECF-4A23-B50F-3766E66A0BE9}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SwarmSharp.Shared", "SwarmSharp.Shared\SwarmSharp.Shared.shproj", "{DACF2EF3-7BC5-4E5F-A762-3E715FB3049F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
