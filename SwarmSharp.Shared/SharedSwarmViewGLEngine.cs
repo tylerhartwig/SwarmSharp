@@ -64,8 +64,7 @@ namespace SwarmSharp.Shared
 
 		public SharedSwarmViewGLEngine () { 
 			#if __ANDROID__
-			var test = Context;
-			scale = test.Resources.DisplayMetrics.Density;
+			scale = Forms.Context.Resources.DisplayMetrics.Density;
 			#elif __IOS__
 			scale = UIKit.UIScreen.MainScreen.Scale;
 			#endif
