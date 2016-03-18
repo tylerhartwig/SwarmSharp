@@ -9,6 +9,13 @@
     <Import_RootNamespace>SwarmSharp.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)SharedGLEngine.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSwarmViewGLEngine.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Shaders\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Shaders\SimpleFragment.glsl" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Shaders\SimpleVertex.glsl" />
   </ItemGroup>
 </Project>
