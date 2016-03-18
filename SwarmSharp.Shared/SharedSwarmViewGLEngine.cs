@@ -71,7 +71,6 @@ namespace SwarmSharp.Shared
 		}
 
 		void Init (){
-			// GL.Viewport (0, 0, pixelWidth, pixelHeight);
 			InitRenderBuffers ();
 			#if __IOS__
 			InitFrameBuffers ();
@@ -174,7 +173,8 @@ namespace SwarmSharp.Shared
 
 		void DrawCircle(int x, int y, int radius = 1) {
 			GL.BindBuffer (BufferTarget.ArrayBuffer, circleVertexBuffer);
-			GL.BindBuffer (BufferTarget.ElementArrayBuffer, circleIndexBuffer);
+		//	GL.BindBuffer (BufferTarget.ElementArrayBuffer, circleIndexBuffer);
+			GL.BindBuffer(BufferTarget.ElementArrayBuffer, -1);
 
 			Matrix4 modelView = Matrix4.Scale (radius) * Matrix4.CreateTranslation (x, y, 0);
 			GL.UniformMatrix4 (Shaders.SimpleShader.ModelviewUniform, false, ref modelView);
@@ -182,7 +182,12 @@ namespace SwarmSharp.Shared
 			GL.VertexAttribPointer (Shaders.SimpleShader.PositionAttribute, 3,
 				VertexAttribPointerType.Float, false, Vector3.SizeInBytes, 0);
 
-			GL.DrawElements (BeginMode.TriangleFan, CIRCLE_RESOLUTION + 2, DrawElementsType.UnsignedByte, 0);
+			//GL.DrawElements (BeginMode.TriangleFan, CIRCLE_RESOLUTION + 2, DrawElementsType.UnsignedByte, 0);
+			List<byte> test = new List<byte>();
+			for (int i = 0; i < CIRCLE_RESOLUTION + 2; i++) {
+				test.Add ((byte)i);
+			}
+			GL.DrawElements (BeginMode.TriangleFan, test.Count, DrawElementsType.UnsignedByte, test.ToArray ());
 
 		}
 
@@ -204,7 +209,7 @@ namespace SwarmSharp.Shared
 			GL.Enable (EnableCap.DepthTest);
 			GL.Viewport (0, 0, pixelWidth, pixelHeight);
 
-			Matrix4 orthogonal = Matrix4.CreateTranslation(-(float)pixelWidth / 2.0f, -(float)pixelHeight / 2.0f, 0f) * Matrix4.CreateOrthographic (pixelWidth, pixelHeight, -1, 1);
+			Matrix4 orthogonal =  Matrix4.CreateTranslation(-(float)pixelWidth / 2.0f, -(float)pixelHeight / 2.0f, 0f) * Matrix4.CreateOrthographic (pixelWidth, pixelHeight, -1, 1);
 			GL.UniformMatrix4 (Shaders.SimpleShader.ProjectionUniform, false, ref orthogonal);
 
 			SetColor (0x2c, 0x3e, 0x50);
