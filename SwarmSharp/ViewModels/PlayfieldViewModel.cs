@@ -40,7 +40,7 @@ namespace SwarmSharp
 		}
 
 		public PlayfieldViewModel () {
-			int numAgents = 10000;
+			int numAgents = 5000;
 			IsPlaying = false;
 			playfield = new Playfield ();
 			RenderAction = new Action<SKCanvas, int, int> (render);
