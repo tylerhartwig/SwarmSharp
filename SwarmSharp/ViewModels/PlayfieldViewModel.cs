@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
-using SkiaSharp;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -10,12 +9,6 @@ namespace SwarmSharp
 	public class PlayfieldViewModel : ViewModel
 	{
 		Playfield playfield;
-
-		private Action<SKCanvas, int, int> renderAction;
-		public Action<SKCanvas, int, int> RenderAction{
-			get { return renderAction; }
-			set { SetProperty (ref renderAction, value); }
-		}
 
 		private bool isPlaying;
 		public bool IsPlaying {
@@ -43,7 +36,6 @@ namespace SwarmSharp
 			int numAgents = 5000;
 			IsPlaying = false;
 			playfield = new Playfield ();
-			RenderAction = new Action<SKCanvas, int, int> (render);
 			TogglePlay = new Command (async () => await togglePlay());
 
 			var random = new Random ();
@@ -83,34 +75,6 @@ namespace SwarmSharp
 
 		public List<Agent[]> GetAgents () {
 			return playfield.Groups;
-		}
-
-		void render(SKCanvas canvas, int width, int height){
-			canvas.Clear (SKColors.Green);
-			using (var paint = new SKPaint ()) {
-				paint.IsAntialias = true;
-				paint.Color = new SKColor (0x2c, 0x3e, 0x50);
-				paint.StrokeCap = SKStrokeCap.Round;
-
-				if (playfield != null && playfield.Groups != null) {
-					foreach (var group in playfield.Groups) {
-						foreach (var agent in group) {
-							using (var path = new SKPath ()) {
-								int X = (int)agent.Position.X;
-								int Y = (int)agent.Position.Y;
-								path.MoveTo (X, Y);
-								path.LineTo (X + 2, Y);
-								path.LineTo (X + 2, Y + 2);
-								path.LineTo (X, Y + 2);
-								path.Close ();
-
-								// draw the Xamagon path
-								canvas.DrawPath (path, paint);
-							}
-						}
-					}
-				}
-			}
 		}
 	}
 }

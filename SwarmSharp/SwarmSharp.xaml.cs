@@ -2,7 +2,6 @@
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using SkiaSharp;
 using System.Collections.Generic;
 using System.Diagnostics;
 
