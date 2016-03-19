@@ -171,18 +171,18 @@ namespace SwarmSharp.Shared
 			GL.Uniform4 (Shaders.SimpleShader.ColorUniform, color);
 		}
 
-		void DrawCircle(int x, int y, int radius = 1) {
+		void SetupCircle () {
 			GL.BindBuffer (BufferTarget.ArrayBuffer, circleVertexBuffer);
 			GL.BindBuffer (BufferTarget.ElementArrayBuffer, circleIndexBuffer);
+			GL.VertexAttribPointer (Shaders.SimpleShader.PositionAttribute, 3,
+				VertexAttribPointerType.Float, false, Vector3.SizeInBytes, 0);
+		}
+		void DrawCircle (int x, int y, int radius = 1) {
 
 			Matrix4 modelView = Matrix4.Scale (radius) * Matrix4.CreateTranslation (x, y, 0);
 			GL.UniformMatrix4 (Shaders.SimpleShader.ModelviewUniform, false, ref modelView);
 
-			GL.VertexAttribPointer (Shaders.SimpleShader.PositionAttribute, 3,
-				VertexAttribPointerType.Float, false, Vector3.SizeInBytes, 0);
-
-			GL.DrawArrays (BeginMode.TriangleFan, 0, CIRCLE_RESOLUTION + 2);
-		
+			GL.DrawArrays (BeginMode.TriangleFan, 0, CIRCLE_RESOLUTION + 2);		
 		}
 			
 		#endregion
@@ -208,6 +208,7 @@ namespace SwarmSharp.Shared
 
 			SetColor (0x2c, 0x3e, 0x50);
 
+			SetupCircle ();
 			foreach (var group in viewModel.GetAgents()) {
 				foreach (var agent in group) {
 					DrawCircle ((int)(agent.Position.X * scale), (int)(agent.Position.Y * scale), 1 * (int)scale);
