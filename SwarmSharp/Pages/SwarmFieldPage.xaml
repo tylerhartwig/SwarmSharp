@@ -5,11 +5,9 @@
 	</ContentPage.BindingContext>
 	<ContentPage.Content>
 		<StackLayout VerticalOptions="FillAndExpand">
-			<local:SkiaView 
+			<local:SwarmView
 					  VerticalOptions="FillAndExpand"
-					  HorizontalOptions="FillAndExpand"
-					  DrawCallback="{Binding RenderAction}"
-					  Drawing="{Binding IsPlaying}" />
+					  HorizontalOptions="FillAndExpand" />
 
 		<Button Text="Play!"
 					Command="{Binding TogglePlay}" />

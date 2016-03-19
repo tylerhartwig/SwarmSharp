@@ -49,7 +49,6 @@
     <Compile Include="Swarm\Utility\PointUtility.cs" />
     <Compile Include="ViewModels\PlayfieldViewModel.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
-    <Compile Include="Swarm\Rules\BullyProtector.cs" />
     <Compile Include="CustomViews\Views\SwarmView.cs" />
     <Compile Include="CustomViews\Interfaces\ISwarmViewGLEngine.cs" />
   </ItemGroup>

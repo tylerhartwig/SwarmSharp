@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 using SkiaSharp;
@@ -40,7 +40,7 @@ namespace SwarmSharp
 		}
 
 		public PlayfieldViewModel () {
-			int numAgents = 100000;
+			int numAgents = 5000;
 			IsPlaying = false;
 			playfield = new Playfield ();
 			RenderAction = new Action<SKCanvas, int, int> (render);
@@ -79,6 +79,10 @@ namespace SwarmSharp
 				IsPlaying = true;
 				await PlayAsync ();
 			}
+		}
+
+		public List<Agent[]> GetAgents () {
+			return playfield.Groups;
 		}
 
 		void render(SKCanvas canvas, int width, int height){

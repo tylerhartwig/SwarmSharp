@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Collections.Generic;
 
@@ -29,17 +31,17 @@ namespace SwarmSharp
 			}
 		}
 
-		public void Iterate(){
-			foreach (var group in Groups) {
-				foreach (var agent in group) {
+		public void Iterate (){
+			Parallel.ForEach (Groups, (group) => {
+				Parallel.ForEach(group, (agent) => {
 					agent.CalculateStep ();
-				}
-			}
-			foreach (var group in Groups) {
-				foreach (var agent in group) {
+				});
+			});
+			Parallel.ForEach (Groups, (group) => {
+				Parallel.ForEach (group, (agent) => {
 					agent.TakeStep (Width, Height);
-				}
-			}
+				});
+			});
 		}
 
 		public void PrintPositions(){
