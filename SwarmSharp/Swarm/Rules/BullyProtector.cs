@@ -2,6 +2,7 @@
 
 namespace SwarmSharp
 {
+	[AgentRule("Bully Protector")]
 	public class BullyProtector : IAgentRule
 	{
 		Agent owner;
