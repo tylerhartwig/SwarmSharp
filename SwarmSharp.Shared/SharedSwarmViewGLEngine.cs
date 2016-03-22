@@ -71,6 +71,7 @@ namespace SwarmSharp.Shared
 		}
 
 		void Init (){
+			InitView ();
 			InitRenderBuffers ();
 			#if __IOS__
 			InitFrameBuffers ();
@@ -80,7 +81,13 @@ namespace SwarmSharp.Shared
 			initialized = true;
 		}
 
-		void InitRenderBuffers (){
+		void InitView () {
+			GL.ClearColor (1f, 1f, 1f, 1f);
+			GL.Enable (EnableCap.DepthTest);
+			GL.Viewport (0, 0, pixelWidth, pixelHeight);
+		}
+
+		void InitRenderBuffers () {
 			GL.GenRenderbuffers (1, out depthRenderBuffer);
 			GL.BindRenderbuffer (RenderbufferTarget.Renderbuffer, depthRenderBuffer);
 			GL.RenderbufferStorage (RenderbufferTarget.Renderbuffer, RenderbufferInternalFormat.DepthComponent16, pixelWidth, pixelHeight);
@@ -91,7 +98,7 @@ namespace SwarmSharp.Shared
 		}
 
 		#if __IOS__
-		void InitFrameBuffers (){
+		void InitFrameBuffers () {
 			GL.GenFramebuffers (1, out frameBuffer);
 			GL.BindFramebuffer (FramebufferTarget.Framebuffer, frameBuffer);
 			GL.FramebufferRenderbuffer (FramebufferTarget.Framebuffer, FramebufferSlot.ColorAttachment0,
@@ -121,7 +128,7 @@ namespace SwarmSharp.Shared
 			return shaderHandle;
 		}
 
-		void InitSimpleShaders (){
+		void InitSimpleShaders () {
 			int vertexShader = CompileShader (Shaders.SimpleShader.VertexShader, ShaderType.VertexShader);
 			int fragmentShader = CompileShader (Shaders.SimpleShader.FragmentShader, ShaderType.FragmentShader);
 			simpleProgram = GL.CreateProgram ();
@@ -187,7 +194,7 @@ namespace SwarmSharp.Shared
 			
 		#endregion
 
-		public void SetView(OpenGLView view){
+		public void SetView(OpenGLView view) {
 			this.view = view;
 		}
 
@@ -198,10 +205,7 @@ namespace SwarmSharp.Shared
 		public void Render (Rectangle r) {
 			if(!initialized)
 				Init ();
-			GL.ClearColor (1f, 1f, 1f, 1f);
 			GL.Clear ((ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit));
-			GL.Enable (EnableCap.DepthTest);
-			GL.Viewport (0, 0, pixelWidth, pixelHeight);
 
 			Matrix4 orthogonal = Matrix4.CreateTranslation(-(float)pixelWidth / 2.0f, -(float)pixelHeight / 2.0f, 0f) * Matrix4.CreateOrthographic (pixelWidth, pixelHeight, -1, 1);
 			GL.UniformMatrix4 (Shaders.SimpleShader.ProjectionUniform, false, ref orthogonal);
