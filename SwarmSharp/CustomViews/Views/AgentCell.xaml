@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="SwarmSharp.AgentCell">
+	<StackLayout HorizontalOptions="FillAndExpand" Padding="8">
+		<Label Text="{Binding Name}" FontAttributes="Bold" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center"/>
+		<Grid>
+			<Grid.Resources>
+				<ResourceDictionary>
+					<Style x:Key="labelGrayStyle" TargetType="Label">
+						<Setter Property="TextColor" Value="Gray" />
+					</Style>
+				</ResourceDictionary>
+			</Grid.Resources>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+			<Label Text="Shape" Style="{StaticResource labelGrayStyle}" HorizontalTextAlignment="End" Grid.Row="1" Grid.Column="0" />
+			<Picker x:Name="ShapePicker" Grid.Row="1" Grid.Column="1" />
+			<Label Text="Color" Style="{StaticResource labelGrayStyle}" HorizontalTextAlignment="End" Grid.Row="2" Grid.Column="0" />
+			<Picker x:Name="ColorPicker" Grid.Row="2" Grid.Column="1" />
+			<Label Text="Rule" Style="{StaticResource labelGrayStyle}" HorizontalTextAlignment="End" Grid.Row="1" Grid.Column="2" />
+			<Label Text="Count" Style="{StaticResource labelGrayStyle}" HorizontalTextAlignment="End" Grid.Row="2" Grid.Column="2" />
+		</Grid>
+		<View BackgroundColor="Gray" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand" HeightRequest="1" />
+	</StackLayout>
+	<!-- <StackLayout Padding="8" HorizontalOptions="FillAndExpand">
+		<Label Text="{Binding Name}" FontAttributes="Bold" />
+		<StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+			<StackLayout HorizontalOptions="FillAndExpand"> 
+				<Label Text="Agent Shape:" />
+				<Picker x:Name="ShapePicker" HorizontalOptions="FillAndExpand" />
+				<Label Text="Agent Color:" />
+				<Picker x:Name="ColorPicker" HorizontalOptions="FillAndExpand" />
+			</StackLayout>
+		</StackLayout>
+	</StackLayout> -->
+</ViewCell>

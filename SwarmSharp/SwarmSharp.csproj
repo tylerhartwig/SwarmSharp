@@ -50,6 +50,17 @@
     <Compile Include="Swarm\Rules\BullyProtector.cs" />
     <Compile Include="CustomViews\Views\SwarmView.cs" />
     <Compile Include="CustomViews\Interfaces\ISwarmViewGLEngine.cs" />
+    <Compile Include="Pages\SwarmConfigurationPage.xaml.cs">
+      <DependentUpon>SwarmConfigurationPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\AgentViewModel.cs" />
+    <Compile Include="CustomViews\Views\AgentCell.xaml.cs">
+      <DependentUpon>AgentCell.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\Enums\AgentColor.cs" />
+    <Compile Include="Utility\Enums\AgentShape.cs" />
+    <Compile Include="Utility\Factories\AgentRule.cs" />
+    <Compile Include="Utility\Factories\AgentRuleFactory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.1.0.6529\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.1.0.6529\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
@@ -74,6 +85,12 @@
     <EmbeddedResource Include="Pages\SwarmFieldPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="Pages\SwarmConfigurationPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomViews\Views\AgentCell.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CustomViews\" />
@@ -81,6 +98,9 @@
     <Folder Include="CustomViews\Views\" />
     <Folder Include="Pages\" />
     <Folder Include="ViewModels\" />
+    <Folder Include="Utility\" />
+    <Folder Include="Utility\Enums\" />
+    <Folder Include="Utility\Factories\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Swarm\" />

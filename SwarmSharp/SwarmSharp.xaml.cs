@@ -14,7 +14,8 @@ namespace SwarmSharp
 		{
 			InitializeComponent ();
 
-			MainPage = new SwarmFieldPage ();
+//			MainPage = new SwarmFieldPage ();
+			MainPage = new NavigationPage (new SwarmConfigurationPage ());
 		}
 
 		protected override void OnStart ()
