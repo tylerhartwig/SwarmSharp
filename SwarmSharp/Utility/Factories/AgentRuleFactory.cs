@@ -25,9 +25,9 @@ namespace SwarmSharp
 			var assembly = typeof(AgentRuleFactory).GetTypeInfo ().Assembly;
 			var types = assembly.DefinedTypes;
 			foreach (var type in types) {
-				var attribute = type.GetCustomAttributes().Where (a => a is AgentRule).FirstOrDefault ();
+				var attribute = type.GetCustomAttributes().Where (a => a is AgentRuleName).FirstOrDefault ();
 				if(attribute != null)
-					rules.Add (((AgentRule)attribute).Name, type.AsType ());
+					rules.Add (((AgentRuleName)attribute).Name, type.AsType ());
 			}
 		}
 
@@ -35,11 +35,22 @@ namespace SwarmSharp
 			return rules.Keys.ToList ();
 		}
 
-		public IAgentRule CreateRule (string name) {
-			var rule = rules [name];
-			return Activator.CreateInstance (rule) as IAgentRule;
+		public IAgentMovementRule CreateDefault(){
+			return CreateRule (rules.Keys.FirstOrDefault ());
 		}
 
+		public IAgentMovementRule CreateRule (string name) {
+			var rule = rules [name];
+			return Activator.CreateInstance (rule) as IAgentMovementRule;
+		}
+
+		public MovementRuleViewModel CreateDefaultViewModel(){
+			return CreateRuleViewModel (rules.Keys.FirstOrDefault ());
+		}
+
+		public MovementRuleViewModel CreateRuleViewModel(string name){
+			return new MovementRuleViewModel () { Model = CreateRule(name) };
+		}
 	}
 }
 

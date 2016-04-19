@@ -1,12 +1,71 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:SwarmSharp;assembly=SwarmSharp" x:Class="SwarmSharp.SwarmConfigurationPage">
+<ContentPage Title="Edit Swarm" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:SwarmSharp;assembly=SwarmSharp" x:Class="SwarmSharp.SwarmConfigurationPage">
+	<ContentPage.BindingContext>
+		<local:SwarmViewModel />
+	</ContentPage.BindingContext>
 	<ContentPage.Content>
-		<ListView x:Name="listView" RowHeight="130" SeparatorVisibility="None">
-			<ListView.ItemTemplate>
-				<DataTemplate>
-					<local:AgentCell ShapeList="{Binding AgentShapes}" ColorList="{Binding AgentColors}"/>
-				</DataTemplate>
-			</ListView.ItemTemplate>
-		</ListView>
+		<ScrollView>
+			<Grid Padding="8">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="2*" />
+				</Grid.ColumnDefinitions>
+				<Label Text="Name" VerticalTextAlignment="Center" HorizontalTextAlignment="End" Grid.Row="0" Grid.Column="0" />
+				<Entry Text="{Binding Name}" Grid.Row="0" Grid.Column="1" />
+				<Label Text="Count" VerticalTextAlignment="Center" HorizontalTextAlignment="End" Grid.Row="1" Grid.Column="0" />
+				<Entry Text="{Binding Count}" Grid.Row="1" Grid.Column="1" />
+				<Label Text="Visual Representation" VerticalTextAlignment="End" HorizontalTextAlignment="Start" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" />
+				<Label Text="Shape" VerticalTextAlignment="Center" HorizontalTextAlignment="End" Grid.Row="3" Grid.Column="0" />
+				<Picker Title="Shape" Grid.Row="3" Grid.Column="1" local:PickerCollection.Items="{Binding AgentShapes}" />
+				<Label Text="Color" VerticalTextAlignment="Center" HorizontalTextAlignment="End" Grid.Row="4" Grid.Column="0" />
+				<Picker Grid.Row="4" Grid.Column="1" local:PickerCollection.Items="{Binding AgentColors}" />
+				<Label Text="Movement Rule" VerticalTextAlignment="Center" HorizontalTextAlignment="End" Grid.Row="5" Grid.Column="0" />
+				<Button Text="Add Rule" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" x:Name="MovementRuleButton" Command="{Binding AddRule}" IsVisible="false">
+					<Button.Triggers>
+						<DataTrigger TargetType="Button" Binding="{Binding HasMovementRule}" Value="false">
+							<Setter Property="IsVisible" Value="true" />
+						</DataTrigger>
+						<DataTrigger TargetType="Button" Binding="{Binding HasMovementRule}" Value="true">
+							<Setter Property="IsVisible" Value="false" />
+						</DataTrigger>
+					</Button.Triggers>
+				</Button>
+				<StackLayout Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" IsVisible="false">
+					<StackLayout.Triggers>
+						<DataTrigger TargetType="StackLayout" Binding="{Binding HasMovementRule}" Value="true">
+							<Setter Property="IsVisible" Value="true" />
+						</DataTrigger>
+						<DataTrigger TargetType="StackLayout" Binding="{Binding HasMovementRule}" Value="false">
+							<Setter Property="IsVisible" Value="false" />
+						</DataTrigger>
+					</StackLayout.Triggers>
+					<StackLayout Orientation="Horizontal">
+						<Picker SelectedIndex="{Binding SelectedRule}" local:PickerCollection.Items="{Binding RuleOptions}" HorizontalOptions="FillAndExpand" />
+						<Button Text="Edit" Command="{Binding EditRule}" HorizontalOptions="End" />
+					</StackLayout>
+					<StackLayout Orientation="Horizontal">
+						<Label Text="Self-Referenceing:" HorizontalOptions="StartAndExpand" />
+						<Switch HorizontalOptions="End" IsToggled="{Binding SelfReference}" />
+					</StackLayout>
+				</StackLayout>
+<!--				<Frame OutlineColor="Silver" HasShadow="false" Padding="2" Grid.Row="5" Grid.Column="1">
+					<ListView HeightRequest="250" ItemsSource="{Binding Rules}" Footer="{Binding AddRule}">
+						<ListView.FooterTemplate>
+							<DataTemplate>
+								<Button Command="{Binding .}" Text="+ New Rule" TextColor="White" FontAttributes="Bold" HeightRequest="40" BackgroundColor="Green" FontSize="18" BorderRadius="0" />
+							</DataTemplate>
+						</ListView.FooterTemplate>
+					</ListView>
+				</Frame>-->
+			</Grid>
+		</ScrollView>
 	</ContentPage.Content>
 </ContentPage>

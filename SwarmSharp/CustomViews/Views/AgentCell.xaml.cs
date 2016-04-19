@@ -55,8 +55,6 @@ namespace SwarmSharp
 		{
 			base.OnBindingContextChanged ();
 
-			((AgentViewModel)BindingContext).Test ();
-
 			if (BindingContext != null) {
 				resetColorList ();
 				resetShapeList ();

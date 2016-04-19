@@ -82,7 +82,7 @@ namespace SwarmSharp.Shared
 		}
 
 		void InitView () {
-			GL.ClearColor (1f, 1f, 1f, 1f);
+			GL.ClearColor (1f, 1f, 0f, 1f);
 			GL.Enable (EnableCap.DepthTest);
 			GL.Viewport (0, 0, pixelWidth, pixelHeight);
 		}
@@ -95,6 +95,15 @@ namespace SwarmSharp.Shared
 			GL.GenRenderbuffers (1, out colorRenderBuffer);
 			GL.BindRenderbuffer (RenderbufferTarget.Renderbuffer, colorRenderBuffer);
 			GL.RenderbufferStorage (RenderbufferTarget.Renderbuffer, RenderbufferInternalFormat.Rgba4, pixelWidth, pixelHeight);
+		}
+
+		public void ResetSize(){
+			GL.BindRenderbuffer (RenderbufferTarget.Renderbuffer, depthRenderBuffer);
+			GL.RenderbufferStorage (RenderbufferTarget.Renderbuffer, RenderbufferInternalFormat.DepthComponent16, pixelWidth, pixelHeight);
+
+			GL.BindRenderbuffer (RenderbufferTarget.Renderbuffer, colorRenderBuffer);
+			GL.RenderbufferStorage(RenderbufferTarget.Renderbuffer, RenderbufferInternalFormat.Rgba4, pixelWidth, pixelHeight);
+			GL.Viewport (0, 0, pixelWidth, pixelHeight);
 		}
 
 		#if __IOS__
@@ -213,8 +222,8 @@ namespace SwarmSharp.Shared
 			SetColor (0x2c, 0x3e, 0x50);
 
 			SetupCircle ();
-			foreach (var group in viewModel.GetAgents()) {
-				foreach (var agent in group) {
+			foreach (var swarm in viewModel.GetSwarms()) {
+				foreach (var agent in swarm.GetAgents()){
 					DrawCircle ((int)(agent.Position.X * scale), (int)(agent.Position.Y * scale), 1 * (int)scale);
 				}
 			}

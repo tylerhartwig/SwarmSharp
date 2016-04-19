@@ -8,14 +8,10 @@ namespace SwarmSharp
 	{
 		public Point Position { get; set; } = new Point ();
 
-		private List<IAgentRule> rules = new List<IAgentRule>();
+		public IAgentMovementRule MovementRule { get; set; }
 		private Step nextStep;
 
 		public Agent () { }
-
-		public void AddRule(IAgentRule rule) {
-			rules.Add (rule);
-		}
 
 		public void TakeStep (int maxWidth, int maxHeight) {
 			if (nextStep != null){
@@ -33,11 +29,7 @@ namespace SwarmSharp
 		}
 
 		public void CalculateStep() {
-			var steps = new List<Step> ();
-			foreach (var rule in rules) {
-				steps.Add (rule.CalculateStep ());
-			}
-			nextStep = steps.FirstOrDefault ();
+			nextStep = MovementRule.CalculateStep ();
 		}
 	}
 }

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:SwarmSharp;Assembly=SwarmSharp" x:Class="SwarmSharp.RuleConfigurationPage">
+	<ContentPage.BindingContext>
+		<local:RuleConfigurationViewModel />
+	</ContentPage.BindingContext>
+	<ContentPage.Content>
+		<StackLayout>
+			<Label Text="Targets:" />
+			<ListView ItemsSource="{Binding Targets}" SeparatorVisibility="None" >
+				<ListView.ItemTemplate>
+					<DataTemplate>
+						<ViewCell>
+							<StackLayout Orientation="Horizontal" Padding="8" >
+								<Label Text="{Binding Name}" />
+								<Picker local:PickerCollection.Items="{Binding Swarms}" SelectedIndex="{Binding SelectedTarget}" HorizontalOptions="FillAndExpand" />
+							</StackLayout>
+						</ViewCell>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</ListView>
+		</StackLayout>
+	</ContentPage.Content>
+</ContentPage>

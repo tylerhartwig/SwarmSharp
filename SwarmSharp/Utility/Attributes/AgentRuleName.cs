@@ -2,11 +2,11 @@
 
 namespace SwarmSharp
 {
-	public class AgentRule : Attribute
+	public class AgentRuleName : Attribute
 	{
 		public string Name;
 
-		public AgentRule (string name)
+		public AgentRuleName (string name)
 		{
 			Name = name;
 		}

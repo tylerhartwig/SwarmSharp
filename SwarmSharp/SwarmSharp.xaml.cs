@@ -15,7 +15,8 @@ namespace SwarmSharp
 			InitializeComponent ();
 
 //			MainPage = new SwarmFieldPage ();
-			MainPage = new NavigationPage (new SwarmConfigurationPage ());
+			DataService.CurrentPlayField = new Playfield ();
+			MainPage = new NavigationPage (new PlayfieldConfigurationPage ());
 		}
 
 		protected override void OnStart ()

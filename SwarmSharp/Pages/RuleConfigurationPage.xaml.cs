@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace SwarmSharp
 {
-	public partial class SwarmConfigurationPage : ContentPage
+	public partial class RuleConfigurationPage : ContentPage
 	{
-		public SwarmConfigurationPage ()
+		public RuleConfigurationPage ()
 		{
 			InitializeComponent ();
 		}
