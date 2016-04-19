@@ -2,6 +2,7 @@
 
 namespace SwarmSharp
 {
+	[AgentRuleName("Random Motion")]
 	public class RandomMotion : AgentRule, IAgentMovementRule
 	{
 		public RandomMotion ()
@@ -12,37 +13,39 @@ namespace SwarmSharp
 
 		public Step CalculateStep ()
 		{
+			var random = new Random ();
 			var step = new Step ();
+			step.Direction.X = (random.Next () % 100) - 50;
+			step.Direction.Y = (random.Next () % 100) - 50;
+			step.Direction.Normalize ();
+			return step;
 		}
 
 		public void SetOwner (Agent owner)
 		{
-			throw new NotImplementedException ();
 		}
 
 		public void SetTarget (string name, Swarm target)
 		{
-			throw new NotImplementedException ();
 		}
 
 		public Swarm GetTarget (string name)
 		{
-			throw new NotImplementedException ();
+			return null;
 		}
 
 		public void RotateTargets (bool allowSelfReference = true)
 		{
-			throw new NotImplementedException ();
 		}
 
 		public IAgentMovementRule Copy ()
 		{
-			throw new NotImplementedException ();
+			return new RandomMotion ();
 		}
 
 		public int NumTargets {
 			get {
-				0;
+				return 0;
 			}
 		}
 
