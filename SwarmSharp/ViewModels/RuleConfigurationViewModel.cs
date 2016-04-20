@@ -8,51 +8,46 @@ namespace SwarmSharp
 {
 	public class RuleConfigurationViewModel : ViewModel
 	{
-		MovementRuleViewModel ruleViewModel;
-		public MovementRuleViewModel EditViewModel { get { return ruleViewModel; } set { SetProperty (ref ruleViewModel, value); } }
+		MovementRuleBuilder ruleBuilder;
 
-		ObservableCollection<string> ruleTypes;
-		public ObservableCollection<string> RuleTypes { get { return ruleTypes; } set { SetProperty(ref ruleTypes, value); } }
+		public List<string> RuleTypes { get { return MovementRuleBuilder.RuleTypes.Keys.ToList (); } } 
 
-		ObservableCollection<SwarmViewModel> swarmViewModels;
-		public ObservableCollection<SwarmViewModel> SwarmViewModels { get { return swarmViewModels; } set { SetProperty (ref swarmViewModels, value); } }
-
-		public string RuleType { get { return EditViewModel.Type; } 
+		public string RuleType { get { return ruleBuilder.BuildingName; }
 			set { 
-				EditViewModel.Type = value;
+				ruleBuilder.ChangeType (value);
+				updateTargets ();
 				OnPropertyChanged ();
-				OnPropertyChanged (nameof (Targets));
+				OnPropertyChanged (nameof (RuleIndex));
+			} 
+		}
+			
+		public int RuleIndex { get { 
+				var value = RuleTypes.IndexOf (RuleType); 
+				return value;
+			} 
+
+			set { 
+				ruleBuilder.ChangeType (RuleTypes [value]);
+				updateTargets ();
+				OnPropertyChanged ();
+				OnPropertyChanged (nameof (RuleType));
 			} 
 		}
 
-		public List<TargetViewModel> Targets { get { return EditViewModel.Targets; } }
+		ObservableCollection<TargetViewModel> targets;
+		public ObservableCollection<TargetViewModel> Targets { get { return targets; } set { SetProperty (ref targets, value); } }
 
-		public int RuleIndex { get { return RuleTypes.IndexOf(((AgentRule)EditViewModel.Model).Name); } 
-			set { 
-				EditViewModel.Model = AgentRuleFactory.Instance.CreateRule (RuleTypes[value]);
-				OnPropertyChanged ();
-				OnPropertyChanged (nameof (Targets));
-			} 
+		public RuleConfigurationViewModel() { 
+			Targets = new ObservableCollection<TargetViewModel> ();
+			ruleBuilder = DataService.CurrentMovementRuleBuilder;
+			updateTargets ();
 		}
 
-		public RuleConfigurationViewModel(){
-			RuleTypes = new ObservableCollection<string> (AgentRuleFactory.Instance.GetRuleNames ());
-			EditViewModel = AgentRuleFactory.Instance.CreateRuleViewModel (RuleTypes.FirstOrDefault ());
-			EditViewModel.Model = DataService.CurrentMovementRule;
-			SwarmViewModels = new ObservableCollection<SwarmViewModel> ();
-			foreach (var swarm in DataService.CurrentPlayField.Swarms) {
-				SwarmViewModels.Add (new SwarmViewModel (swarm));
+		void updateTargets (){
+			Targets.Clear ();
+			foreach (var target in ruleBuilder.GetTargets()) {
+				Targets.Add(new TargetViewModel(target, ruleBuilder));
 			}
-		}
-
-//		public RuleConfigurationViewModel (MovementRuleViewModel ruleViewModel) {
-//			this.EditViewModel = ruleViewModel;
-//			RuleTypes = new ObservableCollection<string> (AgentRuleFactory.Instance.GetRuleNames ());
-//		}
-
-		protected override void OnPropertyChanged ([CallerMemberName] string name = null)
-		{
-			base.OnPropertyChanged (name);
 		}
 	}
 }

@@ -57,7 +57,6 @@
     </Compile>
     <Compile Include="Utility\Enums\AgentColor.cs" />
     <Compile Include="Utility\Enums\AgentShape.cs" />
-    <Compile Include="Utility\Factories\AgentRuleFactory.cs" />
     <Compile Include="Infastructure\PickerCollection.cs" />
     <Compile Include="ViewModels\SwarmViewModel.cs" />
     <Compile Include="Pages\RuleConfigurationPage.xaml.cs">
@@ -66,12 +65,9 @@
     <Compile Include="Infastructure\EventToCommandBehavior.cs" />
     <Compile Include="Infastructure\BehaviorBase.cs" />
     <Compile Include="ViewModels\RuleConfigurationViewModel.cs" />
-    <Compile Include="Swarm\Interfaces\AgentRule.cs" />
     <Compile Include="Pages\PlayfieldConfigurationPage.xaml.cs">
       <DependentUpon>PlayfieldConfigurationPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Swarm\Interfaces\IAgentMovementRule.cs" />
-    <Compile Include="ViewModels\MovementRuleViewModel.cs" />
     <Compile Include="Utility\Converters\SelectedItemEventArgsToSelectedItemConverter.cs" />
     <Compile Include="Utility\TriggerActions\DisappearTriggerAction.cs" />
     <Compile Include="Utility\Attributes\AgentRuleName.cs" />
@@ -80,6 +76,11 @@
     <Compile Include="Swarm\Swarm.cs" />
     <Compile Include="Services\DataService.cs" />
     <Compile Include="Swarm\Rules\RandomMotion.cs" />
+    <Compile Include="Swarm\Rules\Follow.cs" />
+    <Compile Include="Utility\Builders\MovementRuleBuilder.cs" />
+    <Compile Include="Utility\Attributes\AgentRuleTarget.cs" />
+    <Compile Include="Swarm\Interfaces\MovementAgentRule.cs" />
+    <Compile Include="Swarm\Interfaces\ITargetable.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.1.0.6529\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.1.0.6529\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
@@ -132,6 +133,7 @@
     <Folder Include="Utility\TriggerActions\" />
     <Folder Include="Utility\Attributes\" />
     <Folder Include="Services\" />
+    <Folder Include="Utility\Builders\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Swarm\" />

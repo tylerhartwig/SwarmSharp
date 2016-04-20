@@ -6,7 +6,7 @@ namespace SwarmSharp
 	{
 		public static Playfield CurrentPlayField;
 		public static Swarm CurrentSwarm;
-		public static IAgentMovementRule CurrentMovementRule;
+		public static MovementRuleBuilder CurrentMovementRuleBuilder;
 	}
 }
 

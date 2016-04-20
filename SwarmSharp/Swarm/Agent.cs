@@ -8,7 +8,7 @@ namespace SwarmSharp
 	{
 		public Point Position { get; set; } = new Point ();
 
-		public IAgentMovementRule MovementRule { get; set; }
+		public MovementAgentRule MovementRule { get; set; }
 		private Step nextStep;
 
 		public Agent () { }

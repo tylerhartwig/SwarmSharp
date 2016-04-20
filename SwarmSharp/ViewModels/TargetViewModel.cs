@@ -8,35 +8,34 @@ namespace SwarmSharp
 		string name;
 		public string Name { get { return name; } set { SetProperty(ref name, value); } }
 
-		IAgentMovementRule rule;
+		MovementRuleBuilder ruleBuilder;
 
-//		public int SelectedTarget { get { return selectedTarget; } set { SetProperty (ref selectedTarget, value); } }
 		public int SelectedTarget { 
 			get {
-				var ruleTarget = rule.GetTarget (Name);
+				var ruleTarget = ruleBuilder.GetTargetReference (Name);
 				if (ruleTarget != null) {
-					return Swarms.IndexOf (rule.GetTarget (Name).Name);
+					return Options.IndexOf (ruleTarget);
 				} else {
-					rule.SetTarget (Name, DataService.CurrentPlayField.Swarms [0]);
+					ruleBuilder.SetTarget (Name, DataService.CurrentPlayField.Swarms [0]);
 					return 0;
 				}
 			}
 			set {
-				rule.SetTarget (Name, DataService.CurrentPlayField.Swarms [value]);
+				ruleBuilder.SetTarget (Name, DataService.CurrentPlayField.Swarms [value]);
 				OnPropertyChanged ();
 			}
 		}
 
-		ObservableCollection<string> swarms;
-		public ObservableCollection<string> Swarms { get { return swarms; } set { SetProperty(ref swarms, value); } }
+		ObservableCollection<string> options;
+		public ObservableCollection<string> Options { get { return options; } set { SetProperty(ref options, value); } }
 
-		public TargetViewModel (string name, IAgentMovementRule rule)
+		public TargetViewModel (string name, MovementRuleBuilder ruleBuilder)
 		{
-			this.rule = rule;
+			this.ruleBuilder = ruleBuilder;
 			Name = name;
-			Swarms = new ObservableCollection<string> ();
+			Options = new ObservableCollection<string> ();
 			foreach (var swarm in DataService.CurrentPlayField.Swarms){
-				Swarms.Add (swarm.Name);
+				Options.Add (swarm.Name);
 			}
 		}
 	}

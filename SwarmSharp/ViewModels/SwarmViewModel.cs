@@ -16,7 +16,7 @@ namespace SwarmSharp
 
 		public bool HasMovementRule {
 			get {
-				return Model.MovementRule != null;;
+				return Model.MovementRuleBuilder != null;;
 			}
 		}
 
@@ -29,9 +29,9 @@ namespace SwarmSharp
 		}
 
 		public int Count {
-			get { return swarm.Agents.Count; } 
+			get { return swarm.Count; }
 			set { 
-				swarm.SetCount (value);
+				swarm.Count = value;
 				OnPropertyChanged ();
 			}
 		}
@@ -60,20 +60,24 @@ namespace SwarmSharp
 			}
 		}
 
-		int selectedRule;
-		public int SelectedRule { get { return selectedRule; } set { SetProperty (ref selectedRule, value); } }
-
 		ICommand _editRule;
 		public ICommand EditRule { get { return _editRule; } set { SetProperty (ref _editRule, value); } }
 
 		ICommand _addRule;
 		public ICommand AddRule { get { return _addRule; } set { SetProperty (ref _addRule, value); } } 
 
-		MovementRuleViewModel movementRule;
-		public MovementRuleViewModel MovementRule { get { return movementRule; } set { SetProperty (ref movementRule, value); } }
-			
-		ObservableCollection<string> ruleOptions;
-		public ObservableCollection<string> RuleOptions { get { return ruleOptions; } set { SetProperty (ref ruleOptions, value); } }
+		public string MovementRule { 
+			get { 
+				if (HasMovementRule)
+					return Model.MovementRuleBuilder.BuildingName;
+				else
+					return null;
+			} 
+			set {
+				Model.MovementRuleBuilder = new MovementRuleBuilder (value);
+				OnPropertyChanged ();
+			}
+		}
 
 		ObservableCollection<string> agentColors;
 		public ObservableCollection<string> AgentColors { get { return agentColors; } 
@@ -94,20 +98,12 @@ namespace SwarmSharp
 		}
 
 		void Initialize(){
-			
-
-			MovementRule = AgentRuleFactory.Instance.CreateDefaultViewModel ();
-			MovementRule.Model = Model.MovementRule;
-			RuleOptions = new ObservableCollection<string> ();
 			AgentShapes = new ObservableCollection<string> ();
 			AgentColors = new ObservableCollection<string> ();
 
 			EditRule = new Command (editRule);
 			AddRule = new Command (addRule);
-
-			foreach (var rule in AgentRuleFactory.Instance.GetRuleNames()) {
-				RuleOptions.Add (rule);
-			}
+				
 			foreach (var val in Enum.GetValues (typeof(AgentColor)).Cast<AgentColor> ().ToList ()) {
 				AgentColors.Add (val.ToString ());
 			}
@@ -121,7 +117,7 @@ namespace SwarmSharp
 		}
 
 		void editRule(){
-			DataService.CurrentMovementRule = Model.MovementRule;
+			DataService.CurrentMovementRuleBuilder = Model.MovementRuleBuilder;
 
 			if (Application.Current.MainPage is NavigationPage) {
 				var page = new RuleConfigurationPage ();
@@ -129,23 +125,14 @@ namespace SwarmSharp
 			} else {
 				throw new Exception ("Main page is not navigation page! cannot navigate (SwarmViewModel)");
 			}
-
 		}
 
 		void addRule(){
-			if (Model.MovementRule == null)
-				Model.MovementRule = AgentRuleFactory.Instance.CreateDefault ();
-			OnPropertyChanged (nameof (HasMovementRule));
-		}
-
-		protected override void OnPropertyChanged ([CallerMemberName]string name = null)
-		{
-			base.OnPropertyChanged (name);
-
-			if (name == nameof (SelectedRule)) {
-				Model.MovementRule = AgentRuleFactory.Instance.CreateRule (RuleOptions [SelectedRule]);
-			}
-
+			if (!HasMovementRule)
+				Model.MovementRuleBuilder = new MovementRuleBuilder ();
+			editRule ();
+			OnPropertyChanged(nameof(HasMovementRule));
+			OnPropertyChanged (nameof (MovementRule));
 		}
 	}
 }

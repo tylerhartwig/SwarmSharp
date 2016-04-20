@@ -37,10 +37,11 @@ namespace SwarmSharp
 			if (oldValues != null && newValues != null && newValues.SequenceEqual(oldValues))
 				return;
 
-			picker.Items.Clear ();
 
 			if (newValue == null)
 				return;
+
+			picker.Items.Clear ();
 
 			foreach (var item in (IEnumerable<string>) newValue) {
 				picker.Items.Add (item);

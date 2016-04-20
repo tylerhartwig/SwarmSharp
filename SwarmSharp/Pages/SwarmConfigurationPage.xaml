@@ -48,12 +48,8 @@
 						</DataTrigger>
 					</StackLayout.Triggers>
 					<StackLayout Orientation="Horizontal">
-						<Picker SelectedIndex="{Binding SelectedRule}" local:PickerCollection.Items="{Binding RuleOptions}" HorizontalOptions="FillAndExpand" />
+						<Label Text="{Binding MovementRule}" HorizontalOptions="FillAndExpand" />
 						<Button Text="Edit" Command="{Binding EditRule}" HorizontalOptions="End" />
-					</StackLayout>
-					<StackLayout Orientation="Horizontal">
-						<Label Text="Self-Referenceing:" HorizontalOptions="StartAndExpand" />
-						<Switch HorizontalOptions="End" IsToggled="{Binding SelfReference}" />
 					</StackLayout>
 				</StackLayout>
 <!--				<Frame OutlineColor="Silver" HasShadow="false" Padding="2" Grid.Row="5" Grid.Column="1">

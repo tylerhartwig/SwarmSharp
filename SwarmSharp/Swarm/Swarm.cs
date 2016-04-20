@@ -5,13 +5,14 @@ using System.Threading.Tasks;
 
 namespace SwarmSharp
 {
-	public class Swarm
+	public class Swarm : ITargetable
 	{
 		public string Name { get; set; }
+		public int Count { get; set; }
 		public List<Agent> Agents { get; set; } = new List<Agent>();
 		public AgentColor Color { get; set; } = AgentColor.Blue;
 		public AgentShape Shape { get; set; } = AgentShape.Square;
-		public IAgentMovementRule MovementRule { get; set; } 
+		public MovementRuleBuilder MovementRuleBuilder { get; set; }
 		public bool SelfReference { get; set; }
 
 		public Swarm () {
@@ -19,10 +20,13 @@ namespace SwarmSharp
 		}
 
 		public void Setup(){
+			Agents.Clear ();
+			for (int i = 0; i < Count; i++) {
+				Agents.Add(new Agent());
+			}
 			foreach (var agent in Agents) {
-				MovementRule.SetOwner (agent);
-				MovementRule.RotateTargets (SelfReference);
-				agent.MovementRule = MovementRule.Copy();
+				MovementRuleBuilder.SetOwnerPosition (agent);
+				agent.MovementRule = MovementRuleBuilder.Build ();
 			}
 		}
 
@@ -46,14 +50,18 @@ namespace SwarmSharp
 			});
 		}
 
-		public void SetCount(int count){
-			while (Agents.Count < count) {
-				Agents.Add (new Agent ());
+		#region ITargetable implementation
+
+		public IEnumerable<Point> GetTargets ()
+		{
+			var list = new List<Point> ();
+			foreach (var agent in Agents) {
+				list.Add (agent.Position);
 			}
-			while (Agents.Count > count) {
-				Agents.RemoveAt (0);
-			}
+			return list;
 		}
+
+		#endregion
 	}
 }
 

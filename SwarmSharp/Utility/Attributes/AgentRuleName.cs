@@ -4,7 +4,7 @@ namespace SwarmSharp
 {
 	public class AgentRuleName : Attribute
 	{
-		public string Name;
+		public string Name { get; set; }
 
 		public AgentRuleName (string name)
 		{

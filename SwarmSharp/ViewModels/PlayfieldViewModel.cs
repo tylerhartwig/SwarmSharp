@@ -80,7 +80,7 @@ namespace SwarmSharp
 			playfield.RePosition ();
 			var fieldPage = new SwarmFieldPage ();
 			fieldPage.BindingContext = this;
-			Application.Current.MainPage = fieldPage;
+			((NavigationPage)Application.Current.MainPage).PushAsync (fieldPage);
 		}
 
 		public void Reset () {

@@ -5,6 +5,7 @@
 	</ContentPage.BindingContext>
 	<ContentPage.Content>
 		<StackLayout>
+			<Picker SelectedIndex="{Binding RuleIndex}" local:PickerCollection.Items="{Binding RuleTypes}" />
 			<Label Text="Targets:" />
 			<ListView ItemsSource="{Binding Targets}" SeparatorVisibility="None" >
 				<ListView.ItemTemplate>
@@ -12,7 +13,7 @@
 						<ViewCell>
 							<StackLayout Orientation="Horizontal" Padding="8" >
 								<Label Text="{Binding Name}" />
-								<Picker local:PickerCollection.Items="{Binding Swarms}" SelectedIndex="{Binding SelectedTarget}" HorizontalOptions="FillAndExpand" />
+								<Picker local:PickerCollection.Items="{Binding Options}" SelectedIndex="{Binding SelectedTarget}" HorizontalOptions="FillAndExpand" />
 							</StackLayout>
 						</ViewCell>
 					</DataTemplate>
