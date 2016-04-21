@@ -7,7 +7,7 @@ namespace SwarmSharp
 {
 	public class MovementRuleBuilder
 	{
-		TypeInfo ruleType;
+		public TypeInfo BuildingRuleType { get; private set; }
 		Point ownerPosition;
 
 		static Dictionary<string, TypeInfo> ruleTypes;
@@ -32,26 +32,28 @@ namespace SwarmSharp
 
 		public string BuildingName {
 			get {
-				return ruleType.GetCustomAttribute<AgentRuleName> ().Name;
+				return BuildingRuleType.GetCustomAttribute<AgentRuleName> ().Name;
 			}
 		}
 
-		public MovementRuleBuilder() : this(RuleTypes.FirstOrDefault ().Key) { }
+		public MovementRuleBuilder() { 
+			BuildingRuleType = null;
+		}
 
 		public MovementRuleBuilder (string ruleName) : this(RuleTypes[ruleName]) { }
 
 		public MovementRuleBuilder (TypeInfo movementRuleType)
 		{
-			ruleType = movementRuleType;
+			BuildingRuleType = movementRuleType;
 			InitializeTargets ();
 		}
 
 		public MovementAgentRule Build(){
 			if (ownerPosition == null)
 				throw new NullReferenceException ("MovementRuleBuilder needs owner's Position to build!");
-			var rule = Activator.CreateInstance (ruleType.AsType ()) as MovementAgentRule;
+			var rule = Activator.CreateInstance (BuildingRuleType.AsType ()) as MovementAgentRule;
 			rule.SetOwner (ownerPosition);
-			var properties = ruleType.DeclaredProperties.Where(p => p.GetCustomAttribute<AgentRuleTarget> () != null);
+			var properties = BuildingRuleType.DeclaredProperties.Where(p => p.GetCustomAttribute<AgentRuleTarget> () != null);
 			foreach (var target in targets) {
 				var property = properties.Where (p => p.GetCustomAttribute<AgentRuleTarget> ().Name == target.Key).First ();
 				var points = target.Value.Item2.GetTargets ().ToArray ();
@@ -77,14 +79,14 @@ namespace SwarmSharp
 		}
 
 		public void ChangeType (TypeInfo type) {
-			ruleType = type;
+			BuildingRuleType = type;
 			InitializeTargets ();
 		}
 
 		void InitializeTargets(){
 			targets.Clear ();
 			targetCount.Clear ();
-			foreach (var property in ruleType.DeclaredProperties) {
+			foreach (var property in BuildingRuleType.DeclaredProperties) {
 				AgentRuleTarget attribute = property.GetCustomAttribute<AgentRuleTarget> ();
 				if (attribute != null) {
 					targets.Add (attribute.Name, null);

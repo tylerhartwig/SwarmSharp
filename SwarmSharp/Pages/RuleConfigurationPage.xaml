@@ -5,7 +5,7 @@
 	</ContentPage.BindingContext>
 	<ContentPage.Content>
 		<StackLayout>
-			<Picker SelectedIndex="{Binding RuleIndex}" local:PickerCollection.Items="{Binding RuleTypes}" />
+			<Picker local:PickerCollection.Items="{Binding RuleTypes}" SelectedIndex="{Binding RuleIndex}" />
 			<Label Text="Targets:" />
 			<ListView ItemsSource="{Binding Targets}" SeparatorVisibility="None" >
 				<ListView.ItemTemplate>

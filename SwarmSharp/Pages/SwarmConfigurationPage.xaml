@@ -28,7 +28,7 @@
 				<Label Text="Color" VerticalTextAlignment="Center" HorizontalTextAlignment="End" Grid.Row="4" Grid.Column="0" />
 				<Picker Grid.Row="4" Grid.Column="1" local:PickerCollection.Items="{Binding AgentColors}" />
 				<Label Text="Movement Rule" VerticalTextAlignment="Center" HorizontalTextAlignment="End" Grid.Row="5" Grid.Column="0" />
-				<Button Text="Add Rule" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" x:Name="MovementRuleButton" Command="{Binding AddRule}" IsVisible="false">
+				<Button x:Name="MovementRuleButton" BindingContext="{Binding MovementRule}" Text="Add Rule" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Command="{Binding AddRule}" IsVisible="false">
 					<Button.Triggers>
 						<DataTrigger TargetType="Button" Binding="{Binding HasMovementRule}" Value="false">
 							<Setter Property="IsVisible" Value="true" />
@@ -38,7 +38,7 @@
 						</DataTrigger>
 					</Button.Triggers>
 				</Button>
-				<StackLayout Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" IsVisible="false">
+				<StackLayout BindingContext="{Binding MovementRule}" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" IsVisible="false" Orientation="Horizontal">
 					<StackLayout.Triggers>
 						<DataTrigger TargetType="StackLayout" Binding="{Binding HasMovementRule}" Value="true">
 							<Setter Property="IsVisible" Value="true" />
@@ -47,10 +47,8 @@
 							<Setter Property="IsVisible" Value="false" />
 						</DataTrigger>
 					</StackLayout.Triggers>
-					<StackLayout Orientation="Horizontal">
-						<Label Text="{Binding MovementRule}" HorizontalOptions="FillAndExpand" />
-						<Button Text="Edit" Command="{Binding EditRule}" HorizontalOptions="End" />
-					</StackLayout>
+					<Label Text="{Binding RuleType}" HorizontalOptions="FillAndExpand" />
+					<Button Text="Edit" Command="{Binding EditRule}" HorizontalOptions="End" />
 				</StackLayout>
 <!--				<Frame OutlineColor="Silver" HasShadow="false" Padding="2" Grid.Row="5" Grid.Column="1">
 					<ListView HeightRequest="250" ItemsSource="{Binding Rules}" Footer="{Binding AddRule}">

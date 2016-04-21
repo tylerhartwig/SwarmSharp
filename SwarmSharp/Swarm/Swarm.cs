@@ -17,6 +17,7 @@ namespace SwarmSharp
 
 		public Swarm () {
 			Agents = new List<Agent> ();
+			MovementRuleBuilder = new MovementRuleBuilder ();
 		}
 
 		public void Setup(){
