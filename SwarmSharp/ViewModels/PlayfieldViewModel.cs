@@ -43,9 +43,6 @@ namespace SwarmSharp
 		ICommand _addSwarm;
 		public ICommand AddSwarm { get { return _addSwarm; } set { SetProperty (ref _addSwarm, value); } }
 
-		ICommand _editSwarm;
-		public ICommand EditSwarm { get { return _editSwarm; } set { SetProperty (ref _editSwarm, value); } }
-
 		ICommand _setupPlay;
 		public ICommand SetupPlay { get { return _setupPlay; } set { SetProperty (ref _setupPlay, value); } }
 
@@ -62,7 +59,6 @@ namespace SwarmSharp
 			TogglePlay = new Command (async () => await togglePlay());
 			AddSwarm = new Command (() => addSwarm ());
 			SetupPlay = new Command (() => setupPlay ());
-			EditSwarm = new Command<SwarmViewModel> (editSwarm);
 
 			foreach (var swarm in playfield.Swarms) {
 				SwarmViewModels.Add (new SwarmViewModel () { Model = swarm });
@@ -91,17 +87,6 @@ namespace SwarmSharp
 			var newSwarm = new Swarm () { Name = "Default Name!" };
 			playfield.AddSwarm (newSwarm);
 			SwarmViewModels.Add (new SwarmViewModel (newSwarm));
-		}
-
-		private void editSwarm(SwarmViewModel selectedItem) {
-			DataService.CurrentSwarm = SelectedSwarm.Model;
-			var editSwarmPage = new SwarmConfigurationPage ();
-			//selectedItem = null;
-
-			if (Application.Current.MainPage is NavigationPage)
-				((NavigationPage)Application.Current.MainPage).PushAsync (editSwarmPage);
-			else
-				throw new Exception ("Main page is not Navigaiton page! cannot navigate!");
 		}
 
 		public async Task PlayAsync() {

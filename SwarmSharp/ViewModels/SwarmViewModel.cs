@@ -38,35 +38,44 @@ namespace SwarmSharp
 			}
 		}
 
-		public AgentColor Color {
-			get { return swarm.Color; } 
-			set {
-				swarm.Color = value;
-				OnPropertyChanged ();
-			}
-		}
+//		public AgentColor Color {
+//			get { return swarm.Color; } 
+//			set {
+//				swarm.Color = value;
+//				OnPropertyChanged ();
+//			}
+//		}
+//
+//		public AgentShape Shape {
+//			get { return swarm.Shape; } 
+//			set {
+//				swarm.Shape = value;
+//				OnPropertyChanged ();
+//			}
+//		}
 
-		public AgentShape Shape {
-			get { return swarm.Shape; } 
-			set {
-				swarm.Shape = value;
-				OnPropertyChanged ();
-			}
-		}
+		ICommand _editSwarm;
+		public ICommand EditSwarm { get { return _editSwarm; } set { SetProperty (ref _editSwarm, value); } }
 
 		MovementRuleBuilderViewModel movementRule;
 		public MovementRuleBuilderViewModel MovementRule { get { return movementRule; }
 			set { SetProperty (ref movementRule, value); } }
 
+		int colorIndex;
+		public int ColorIndex { get { return colorIndex; } set { SetProperty (ref colorIndex, value); } }
+
 		ObservableCollection<string> agentColors;
 		public ObservableCollection<string> AgentColors { get { return agentColors; } 
 			set { SetProperty (ref agentColors, value); } }
+
+		int shapeIndex;
+		public int ShapeIndex { get { return shapeIndex; } set { SetProperty (ref shapeIndex, value); } }
 
 		ObservableCollection<string> agentShapes;
 		public ObservableCollection<string> AgentShapes { get { return agentShapes; } 
 			set { SetProperty (ref agentShapes, value); } }
 
-		public SwarmViewModel() : this(DataService.CurrentSwarm) { }
+		public SwarmViewModel() : this(new Swarm()) { }
 				
 		public SwarmViewModel (Swarm model){
 			Model = model;			
@@ -75,14 +84,31 @@ namespace SwarmSharp
 		}
 
 		void Initialize(){
+			EditSwarm = new Command (editSwarm);
 			AgentShapes = new ObservableCollection<string> ();
 			AgentColors = new ObservableCollection<string> ();
-				
+
 			foreach (var val in Enum.GetValues (typeof(AgentColor)).Cast<AgentColor> ().ToList ()) {
 				AgentColors.Add (val.ToString ());
 			}
 			foreach (var val in Enum.GetValues (typeof(AgentShape)).Cast<AgentShape> ().ToList ()) {
 				AgentShapes.Add (val.ToString ());
+			}
+
+			var random = new Random ();
+			ColorIndex = random.Next (AgentColors.Count);
+			ShapeIndex = random.Next (AgentShapes.Count);			
+		}
+
+		void editSwarm () {
+			var page = new SwarmConfigurationPage ();
+			page.BindingContext = this;
+			var mainPage = Application.Current.MainPage;
+
+			if (mainPage is NavigationPage) {
+				((NavigationPage)mainPage).PushAsync (page);
+			} else {
+				throw new Exception ("Cannot navigate! MainPage is not NavigationPage, (SwarmViewModel)");
 			}
 		}
 
