@@ -40,5 +40,10 @@
 	</array>
 	<key>XSAppIconAssets</key>
 	<string>Resources/Images.xcassets/AppIcons.appiconset</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>cubic.ttf</string>
+		<string>Ubuntu-L.ttf</string>
+	</array>
 </dict>
 </plist>
