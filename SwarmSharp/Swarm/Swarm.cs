@@ -10,8 +10,6 @@ namespace SwarmSharp
 		public string Name { get; set; }
 		public int Count { get; set; }
 		public List<Agent> Agents { get; set; } = new List<Agent>();
-		public AgentColor Color { get; set; } = AgentColor.Blue;
-		public AgentShape Shape { get; set; } = AgentShape.Square;
 		public MovementRuleBuilder MovementRuleBuilder { get; set; }
 		public bool SelfReference { get; set; }
 

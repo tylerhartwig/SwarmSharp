@@ -82,7 +82,7 @@ namespace SwarmSharp.Shared
 		}
 
 		void InitView () {
-			GL.ClearColor (1f, 1f, 0f, 1f);
+			GL.ClearColor (1f, 1f, 1f, 1f);
 			GL.Enable (EnableCap.DepthTest);
 			GL.Viewport (0, 0, pixelWidth, pixelHeight);
 		}

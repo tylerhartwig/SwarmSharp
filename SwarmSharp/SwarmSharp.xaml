@@ -2,6 +2,21 @@
 <Application xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:SwarmSharp;assembly=SwarmSharp" x:Class="SwarmSharp.App">
 	<Application.Resources>
 		<ResourceDictionary>
+			<x:String x:Key="globalFont">Ubuntu-Light</x:String>
+			<Color x:Key="lightBlue">#669CB2</Color>
+			<Color x:Key="lightGray">#7D7D7D</Color>
+			<Style TargetType="Label">
+				<Setter Property="FontFamily" Value="{StaticResource globalFont}" />
+				<Setter Property="HorizontalTextAlignment" Value="Center" />
+				<Setter Property="VerticalTextAlignment" Value="Center" />
+				<Setter Property="FontSize" Value="Large" />
+			</Style> 
+			<Style TargetType="Button">
+				<Setter Property="FontFamily" Value="{StaticResource globalFont}" />
+				<Setter Property="FontAttributes" Value="Bold" />
+				<Setter Property="FontSize" Value="Medium" />
+				<Setter Property="TextColor" Value="{StaticResource lightBlue}" />
+			</Style>
 		</ResourceDictionary>
 	</Application.Resources>
 </Application>
