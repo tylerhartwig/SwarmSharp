@@ -6,7 +6,8 @@ namespace SwarmSharp
 	{
 		Circle,
 		Square,
-		Diamond
+		Diamond,
+		Triangle
 	}
 }
 

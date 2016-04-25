@@ -17,7 +17,6 @@ namespace SwarmSharp.Shared
 	{
 		const int CIRCLE_RESOLUTION = 20;
 
-
 		double scale;
 
 		private static class Shaders {
@@ -42,14 +41,42 @@ namespace SwarmSharp.Shared
 			}
 		}
 
+		static void checkError(){
+			ErrorCode error = GL.GetErrorCode ();
+			if (error != ErrorCode.NoError) {
+				System.Diagnostics.Debug.WriteLine (error.ToString ());
+				throw new Exception (error.ToString ());
+			}
+		}
+
 		// Buffers
 		int depthRenderBuffer;
 		int colorRenderBuffer;
 		#if __IOS__
 		int frameBuffer;
 		#endif
+
+		// shape buffers;
 		uint circleVertexBuffer;
 		uint circleIndexBuffer;
+		int circleIndexLength;
+		BeginMode circleBeginMode;
+		uint diamondVertexBuffer;
+		uint diamondIndexBuffer;
+		int diamondIndexLength;
+		BeginMode diamondBeginMode;
+		uint squareVertexBuffer;
+		uint squareIndexBuffer;
+		int squareIndexLength;
+		BeginMode squareBeginMode;
+		uint triangleVertexBuffer;
+		uint triangleIndexBuffer;
+		int triangleIndexLength;
+		BeginMode triangleBeginMode;
+
+		// Drawing
+		int drawingLength;
+		BeginMode drawingMode;
 
 		// Programs
 		int simpleProgram;
@@ -72,12 +99,17 @@ namespace SwarmSharp.Shared
 
 		void Init (){
 			InitView ();
+			checkError ();
 			InitRenderBuffers ();
+			checkError ();
 			#if __IOS__
 			InitFrameBuffers ();
+			checkError ();
 			#endif
 			InitSimpleShaders ();
-			InitCircleBuffers ();
+			checkError ();
+			InitShapeBuffers ();
+			checkError ();
 			initialized = true;
 		}
 
@@ -95,6 +127,17 @@ namespace SwarmSharp.Shared
 			GL.GenRenderbuffers (1, out colorRenderBuffer);
 			GL.BindRenderbuffer (RenderbufferTarget.Renderbuffer, colorRenderBuffer);
 			GL.RenderbufferStorage (RenderbufferTarget.Renderbuffer, RenderbufferInternalFormat.Rgba4, pixelWidth, pixelHeight);
+		}
+
+		void InitShapeBuffers () {
+			InitCircleBuffer ();
+			checkError ();
+			InitDiamondBuffer ();
+			checkError ();
+			InitSquareBuffer ();
+			checkError ();
+			InitTriangleBuffer ();
+			checkError ();
 		}
 
 		public void ResetSize(){
@@ -151,28 +194,126 @@ namespace SwarmSharp.Shared
 			GL.EnableVertexAttribArray (Shaders.SimpleShader.PositionAttribute);
 		}
 
-		void InitCircleBuffers () {
+		void InitCircleBuffer () {
 			GL.GenBuffers (1, out circleVertexBuffer);
+			checkError ();
 			GL.BindBuffer (BufferTarget.ArrayBuffer, circleVertexBuffer);
+			checkError ();
 			var verticies = new List<Vector3> ();
-			var indicies = new List<byte> ();
+			var indicies = new List<ushort> ();
 			verticies.Add (new Vector3 (0, 0, 0));
 			indicies.Add (0);
-			for (int i = 0; i <= CIRCLE_RESOLUTION; i++){
+			for (int i = 0; i <= CIRCLE_RESOLUTION; i++) {
 				double angle = i * Math.PI * 2.0 / CIRCLE_RESOLUTION;
-				verticies.Add(new Vector3((float)(Math.Cos(angle)), (float)(Math.Sin(angle)), 0));
-				indicies.Add ((byte)(i + 1));
+				verticies.Add (new Vector3 ((float)(Math.Cos (angle)), (float)(Math.Sin (angle)), 0));
+				indicies.Add ((ushort)(i + 1));
 			}
+			circleIndexLength = CIRCLE_RESOLUTION + 2;
 			GL.BufferData (BufferTarget.ArrayBuffer, (IntPtr)(Vector3.SizeInBytes * verticies.Count), verticies.ToArray (), BufferUsage.StaticDraw);
+			checkError ();
 
 			GL.GenBuffers (1, out circleIndexBuffer);
+			checkError ();
 			GL.BindBuffer (BufferTarget.ElementArrayBuffer, circleIndexBuffer);
-			GL.BufferData (BufferTarget.ElementArrayBuffer, (IntPtr)(sizeof(byte) * indicies.Count), indicies.ToArray (), BufferUsage.StaticDraw);
+			checkError ();
+			GL.BufferData (BufferTarget.ElementArrayBuffer, (IntPtr)(sizeof(ushort) * indicies.Count), indicies.ToArray (), BufferUsage.StaticDraw);
+			checkError ();
+			circleBeginMode = BeginMode.TriangleFan;
+			
+			GL.BindBuffer (BufferTarget.ArrayBuffer, 0);
+			checkError ();
+			GL.BindBuffer (BufferTarget.ElementArrayBuffer, 0);
+			checkError ();
+		}
+
+		void InitDiamondBuffer () {
+			var verticies = new List<Vector3> ();
+//			var indicies = new List<ushort> ();
+			verticies.Add(new Vector3(0.5f, 0f, 0f));
+			verticies.Add(new Vector3(0f, 0.5f, 0f));
+			verticies.Add(new Vector3(-0.5f, 0f, 0f));
+			verticies.Add(new Vector3(0f, -0.5f, 0f));
+			verticies.Add(new Vector3(0.5f, 0f, 0f));
+//			indicies.AddRange (new ushort[] { 0, 1, 2, 0, 2, 3 });
+			diamondIndexLength = verticies.Count;
+			GL.GenBuffers (1, out diamondVertexBuffer);
+			GL.BindBuffer (BufferTarget.ArrayBuffer, diamondVertexBuffer);
+			GL.BufferData (BufferTarget.ArrayBuffer, (IntPtr)(Vector3.SizeInBytes * verticies.Count), verticies.ToArray (), BufferUsage.StaticDraw);
+
+//			GL.GenBuffers (1, out diamondIndexBuffer);
+//			GL.BindBuffer (BufferTarget.ElementArrayBuffer, diamondIndexBuffer);
+//			GL.BufferData (BufferTarget.ElementArrayBuffer, (IntPtr)(sizeof(ushort) * indicies.Count), indicies.ToArray (), BufferUsage.StaticDraw);
+			diamondBeginMode = BeginMode.TriangleStrip;
+			GL.BindBuffer (BufferTarget.ArrayBuffer, 0);
+//			GL.BindBuffer (BufferTarget.ElementArrayBuffer, 0);
+		}
+
+		void InitSquareBuffer () {
+			var verticies = new List<Vector3> ();
+//			var indicies = new List<ushort> ();
+			verticies.Add (new Vector3 (0.5f, 0.5f, 0f));
+			verticies.Add (new Vector3 (-0.5f, 0.5f, 0f));
+			verticies.Add (new Vector3 (-0.5f, -0.5f, 0f));
+			verticies.Add (new Vector3 (0.5f, -0.5f, 0f));
+			verticies.Add (new Vector3 (0.5f, 0.5f, 0f));
+//			indicies.AddRange (new ushort[] { 0, 1, 2, 2, 3, 0 });
+			squareIndexLength = verticies.Count;
+			GL.GenBuffers (1, out squareVertexBuffer);
+			GL.BindBuffer (BufferTarget.ArrayBuffer, squareVertexBuffer);
+			GL.BufferData (BufferTarget.ArrayBuffer, (IntPtr)(Vector3.SizeInBytes * verticies.Count), verticies.ToArray (), BufferUsage.StaticDraw);
+
+//			GL.GenBuffers (1, out squareIndexBuffer);
+//			GL.BindBuffer (BufferTarget.ElementArrayBuffer, squareIndexBuffer);
+//			GL.BufferData (BufferTarget.ElementArrayBuffer, (IntPtr)(sizeof(ushort) * indicies.Count), indicies.ToArray (), BufferUsage.StaticDraw);
+			squareBeginMode = BeginMode.TriangleStrip;
+			GL.BindBuffer (BufferTarget.ArrayBuffer, 0);
+//			GL.BindBuffer (BufferTarget.ElementArrayBuffer, 0);
+		}
+
+		void InitTriangleBuffer () {
+			var verticies = new List<Vector3> ();
+//			var indicies = new List<ushort> ();
+			verticies.Add (new Vector3(0f, 0.5f, 0f));
+			verticies.Add (new Vector3(-1.0f * (float)(1.0f / Math.Sqrt (3.0f)), -0.5f, 0f));
+			verticies.Add (new Vector3((float)(1.0f / Math.Sqrt (3.0f)), -0.5f, 0f));
+//			indicies.AddRange (new ushort[] { 0, 1, 2 });
+			triangleIndexLength = verticies.Count;
+
+			GL.GenBuffers (1, out triangleVertexBuffer);
+			GL.BindBuffer (BufferTarget.ArrayBuffer, triangleVertexBuffer);
+			GL.BufferData (BufferTarget.ArrayBuffer, (IntPtr)(Vector3.SizeInBytes * verticies.Count), verticies.ToArray (), BufferUsage.StaticDraw);
+
+//			GL.GenBuffers (1, out triangleIndexBuffer);
+//			GL.BindBuffer (BufferTarget.ElementArrayBuffer, triangleIndexBuffer);
+//			GL.BufferData (BufferTarget.ElementArrayBuffer, (IntPtr)(sizeof(ushort) * indicies.Count), indicies.ToArray (), BufferUsage.StaticDraw);
+			triangleBeginMode = BeginMode.Triangles;
+			GL.BindBuffer (BufferTarget.ArrayBuffer, 0);
+//			GL.BindBuffer (BufferTarget.ElementArrayBuffer, 0);
 		}
 
 		#endregion
 
 		#region Drawing
+
+		void SetColor (AgentColor color) {
+			switch (color) {
+			case AgentColor.Blue:
+				SetColor (0x66, 0x9C, 0xB2);
+				break;
+			case AgentColor.Green:
+				SetColor (0x68, 0xA5, 0x82);
+				break;
+			case AgentColor.Purple:
+				SetColor (0x73, 0x69, 0xAF);
+				break;
+			case AgentColor.Red:
+				SetColor (0xA8, 0x69, 0x69);
+				break;
+			case AgentColor.Yellow:
+				SetColor (0xA3, 0x95, 0x69);
+				break;
+			}
+		}
 
 		void SetColor (int red, int green, int blue, int alpha = 255) {
 			SetColor (red / 255f, green / 255f, blue / 255f, alpha / 255f);
@@ -187,18 +328,49 @@ namespace SwarmSharp.Shared
 			GL.Uniform4 (Shaders.SimpleShader.ColorUniform, color);
 		}
 
-		void SetupCircle () {
-			GL.BindBuffer (BufferTarget.ArrayBuffer, circleVertexBuffer);
-			GL.BindBuffer (BufferTarget.ElementArrayBuffer, circleIndexBuffer);
+		void SetupShapeBuffer (uint arrayBuffer, uint elementBuffer) {
+			GL.BindBuffer (BufferTarget.ArrayBuffer, arrayBuffer);
+			checkError ();
+//			GL.BindBuffer (BufferTarget.ElementArrayBuffer, elementBuffer);
+//			checkError();
 			GL.VertexAttribPointer (Shaders.SimpleShader.PositionAttribute, 3,
 				VertexAttribPointerType.Float, false, Vector3.SizeInBytes, 0);
 		}
-		void DrawCircle (int x, int y, int radius = 1) {
+
+		void SetupShape (AgentShape shape) {
+			switch (shape) {
+			case AgentShape.Circle:
+				SetupShapeBuffer (circleVertexBuffer, circleIndexBuffer);
+				drawingLength = circleIndexLength;
+				drawingMode = circleBeginMode;
+				break;
+			case AgentShape.Diamond:
+				SetupShapeBuffer (diamondVertexBuffer, diamondIndexBuffer);
+				drawingLength = diamondIndexLength;
+				drawingMode = diamondBeginMode;
+				break;
+			case AgentShape.Square:
+				SetupShapeBuffer (squareVertexBuffer, squareIndexBuffer);
+				drawingLength = squareIndexLength;
+				drawingMode = squareBeginMode;
+				break;
+			case AgentShape.Triangle:
+				SetupShapeBuffer (triangleVertexBuffer, triangleIndexBuffer);
+				drawingLength = triangleIndexLength;
+				drawingMode = triangleBeginMode;
+				break;
+			}
+		}
+
+		void DrawShape (int x, int y, int radius = 1) {
 
 			Matrix4 modelView = Matrix4.Scale (radius) * Matrix4.CreateTranslation (x, y, 0);
 			GL.UniformMatrix4 (Shaders.SimpleShader.ModelviewUniform, false, ref modelView);
+			checkError();
 
-			GL.DrawArrays (BeginMode.TriangleFan, 0, CIRCLE_RESOLUTION + 2);		
+			GL.DrawArrays (drawingMode, 0, drawingLength);
+//			GL.DrawElements(drawingMode, drawingLength, DrawElementsType.UnsignedShort, 0);
+			checkError();
 		}
 			
 		#endregion
@@ -219,12 +391,12 @@ namespace SwarmSharp.Shared
 			Matrix4 orthogonal = Matrix4.CreateTranslation(-(float)pixelWidth / 2.0f, -(float)pixelHeight / 2.0f, 0f) * Matrix4.CreateOrthographic (pixelWidth, pixelHeight, -1, 1);
 			GL.UniformMatrix4 (Shaders.SimpleShader.ProjectionUniform, false, ref orthogonal);
 
-			SetColor (0x2c, 0x3e, 0x50);
 
-			SetupCircle ();
-			foreach (var swarm in viewModel.GetSwarms()) {
+			foreach (var swarm in viewModel.SwarmViewModels){
+				SetupShape (swarm.Shape);
+				SetColor (swarm.Color);
 				foreach (var agent in swarm.GetAgents()){
-					DrawCircle ((int)(agent.Position.X * scale), (int)(agent.Position.Y * scale), 1 * (int)scale);
+					DrawShape ((int)(agent.Position.X * scale), (int)(agent.Position.Y * scale), 3 * (int)scale);
 				}
 			}
 		}
