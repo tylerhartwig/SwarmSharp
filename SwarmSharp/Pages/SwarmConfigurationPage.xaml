@@ -3,10 +3,16 @@
 	<ContentPage.BindingContext>
 		<local:SwarmViewModel />
 	</ContentPage.BindingContext>
+	<ContentPage.Resources>
+		<ResourceDictionary>
+			
+		</ResourceDictionary>
+	</ContentPage.Resources>
 	<ContentPage.Content>
 		<ScrollView>
-			<Grid Padding="8">
+			<Grid Padding="12,8,12,0">
 				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
 					<RowDefinition Height="Auto" />
 					<RowDefinition Height="Auto" />
 					<RowDefinition Height="Auto" />
@@ -16,19 +22,19 @@
 				</Grid.RowDefinitions>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*" />
-					<ColumnDefinition Width="2*" />
+					<ColumnDefinition Width="2.5*" />
 				</Grid.ColumnDefinitions>
-				<Label Text="Name" VerticalTextAlignment="Center" HorizontalTextAlignment="End" Grid.Row="0" Grid.Column="0" />
+				<Label Text="Name" Style="{StaticResource propertyLabelStyle}" Grid.Row="0" Grid.Column="0" />
 				<Entry Text="{Binding Name}" Grid.Row="0" Grid.Column="1" />
-				<Label Text="Count" VerticalTextAlignment="Center" HorizontalTextAlignment="End" Grid.Row="1" Grid.Column="0" />
+				<Label Text="Count" Style="{StaticResource propertyLabelStyle}" Grid.Row="1" Grid.Column="0" />
 				<Entry Text="{Binding Count}" Grid.Row="1" Grid.Column="1" />
-				<Label Text="Visual Representation" VerticalTextAlignment="End" HorizontalTextAlignment="Start" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" />
-				<Label Text="Shape" VerticalTextAlignment="Center" HorizontalTextAlignment="End" Grid.Row="3" Grid.Column="0" />
-				<Picker Title="Shape" Grid.Row="3" Grid.Column="1" local:PickerCollection.Items="{Binding AgentShapes}" SelectedIndex="{Binding ShapeIndex}" />
-				<Label Text="Color" VerticalTextAlignment="Center" HorizontalTextAlignment="End" Grid.Row="4" Grid.Column="0" />
-				<Picker Grid.Row="4" Grid.Column="1" local:PickerCollection.Items="{Binding AgentColors}" SelectedIndex="{Binding ColorIndex}" />
-				<Label Text="Movement Rule" VerticalTextAlignment="Center" HorizontalTextAlignment="End" Grid.Row="5" Grid.Column="0" />
-				<Button x:Name="MovementRuleButton" BindingContext="{Binding MovementRule}" Text="Add Rule" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Command="{Binding AddRule}" IsVisible="false">
+				<Label Text="Visuals" Style="{StaticResource headerLabelStyle}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" />
+				<Label Text="Shape" Style="{StaticResource propertyLabelStyle}" Grid.Row="3" Grid.Column="0" />
+				<Picker Title="Shape" Grid.Row="3" Grid.Column="1" local:PickerCollection.Items="{Binding Shapes}" SelectedIndex="{Binding ShapeIndex}" />
+				<Label Text="Color" Style="{StaticResource propertyLabelStyle}" Grid.Row="4" Grid.Column="0" />
+				<Picker Grid.Row="4" Grid.Column="1" local:PickerCollection.Items="{Binding Colors}" SelectedIndex="{Binding ColorIndex}" />
+				<Label Text="Movement Rule" Style="{StaticResource headerLabelStyle}" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" />
+				<Button x:Name="MovementRuleButton" BindingContext="{Binding MovementRule}" Text="Add Rule" FontSize="Large" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding AddRule}" IsVisible="false">
 					<Button.Triggers>
 						<DataTrigger TargetType="Button" Binding="{Binding HasMovementRule}" Value="false">
 							<Setter Property="IsVisible" Value="true" />
@@ -38,18 +44,16 @@
 						</DataTrigger>
 					</Button.Triggers>
 				</Button>
-				<StackLayout BindingContext="{Binding MovementRule}" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" IsVisible="false" Orientation="Horizontal">
-					<StackLayout.Triggers>
-						<DataTrigger TargetType="StackLayout" Binding="{Binding HasMovementRule}" Value="true">
+				<Button Text="{Binding RuleType}" FontSize="Large" Command="{Binding EditRule}" BindingContext="{Binding MovementRule}" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" IsVisible="false" HorizontalOptions="FillAndExpand">
+					<Button.Triggers>
+						<DataTrigger TargetType="Button" Binding="{Binding HasMovementRule}" Value="true">
 							<Setter Property="IsVisible" Value="true" />
 						</DataTrigger>
-						<DataTrigger TargetType="StackLayout" Binding="{Binding HasMovementRule}" Value="false">
+						<DataTrigger TargetType="Button" Binding="{Binding HasMovementRule}" Value="false">
 							<Setter Property="IsVisible" Value="false" />
 						</DataTrigger>
-					</StackLayout.Triggers>
-					<Label Text="{Binding RuleType}" HorizontalOptions="FillAndExpand" />
-					<Button Text="Edit" Command="{Binding EditRule}" HorizontalOptions="End" />
-				</StackLayout>
+					</Button.Triggers>
+				</Button>
 			</Grid>
 		</ScrollView>
 	</ContentPage.Content>

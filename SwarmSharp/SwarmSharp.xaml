@@ -17,6 +17,21 @@
 				<Setter Property="FontSize" Value="Medium" />
 				<Setter Property="TextColor" Value="{StaticResource lightBlue}" />
 			</Style>
+			<Style x:Key="propertyLabelStyle" TargetType="Label">
+				<Setter Property="HorizontalTextAlignment" Value="Start" />
+				<Setter Property="VerticalTextAlignment" Value="Center" />
+				<Setter Property="FontFamily" Value="{StaticResource globalFont}" />
+				<Setter Property="TextColor" Value="{StaticResource lightGray}" />
+				<Setter Property="FontSize" Value="22" />
+			</Style>
+			<Style x:Key="headerLabelStyle" TargetType="Label">
+				<Setter Property="HorizontalTextAlignment" Value="Center" />
+				<Setter Property="VerticalTextAlignment" Value="Center" />
+				<Setter Property="FontFamily" Value="{StaticResource globalFont}" />
+				<Setter Property="TextColor" Value="{StaticResource lightGray}" />
+				<Setter Property="FontSize" Value="28" />
+				<Setter Property="Margin" Value="0,8,0,0" />
+			</Style>
 		</ResourceDictionary>
 	</Application.Resources>
 </Application>

@@ -5,14 +5,15 @@
 	</ContentPage.BindingContext>
 	<ContentPage.Content>
 		<StackLayout>
+			<Label Text="Rule" Style="{StaticResource headerLabelStyle}"  />
 			<Picker local:PickerCollection.Items="{Binding RuleTypes}" SelectedIndex="{Binding RuleIndex}" />
-			<Label Text="Targets:" />
+			<Label Text="Targets" Style="{StaticResource headerLabelStyle}" />
 			<ListView ItemsSource="{Binding Targets}" SeparatorVisibility="None" >
 				<ListView.ItemTemplate>
 					<DataTemplate>
 						<ViewCell>
 							<StackLayout Orientation="Horizontal" Padding="8" >
-								<Label Text="{Binding Name}" />
+								<Label Text="{Binding Name}" Style="{StaticResource propertyLabelStyle}" />
 								<Picker local:PickerCollection.Items="{Binding Options}" SelectedIndex="{Binding SelectedTarget}" HorizontalOptions="FillAndExpand" />
 							</StackLayout>
 						</ViewCell>
