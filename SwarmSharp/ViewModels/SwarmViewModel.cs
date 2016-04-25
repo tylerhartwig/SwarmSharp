@@ -38,21 +38,15 @@ namespace SwarmSharp
 			}
 		}
 
-//		public AgentColor Color {
-//			get { return swarm.Color; } 
-//			set {
-//				swarm.Color = value;
-//				OnPropertyChanged ();
-//			}
-//		}
-//
-//		public AgentShape Shape {
-//			get { return swarm.Shape; } 
-//			set {
-//				swarm.Shape = value;
-//				OnPropertyChanged ();
-//			}
-//		}
+		public AgentColor Color {
+			get { return AgentColors [ColorIndex]; }
+			set { ColorIndex = AgentColors.IndexOf (value); }
+		}
+
+		public AgentShape Shape {
+			get { return AgentShapes [ShapeIndex]; }
+			set { ShapeIndex = AgentShapes.IndexOf (value); }
+		}
 
 		ICommand _editSwarm;
 		public ICommand EditSwarm { get { return _editSwarm; } set { SetProperty (ref _editSwarm, value); } }
@@ -62,18 +56,33 @@ namespace SwarmSharp
 			set { SetProperty (ref movementRule, value); } }
 
 		int colorIndex;
-		public int ColorIndex { get { return colorIndex; } set { SetProperty (ref colorIndex, value); } }
+		public int ColorIndex { get { return colorIndex; } 
+			set { 
+				SetProperty (ref colorIndex, value); 
+				OnPropertyChanged (nameof (Color));
+			} 
+		}
 
-		ObservableCollection<string> agentColors;
-		public ObservableCollection<string> AgentColors { get { return agentColors; } 
-			set { SetProperty (ref agentColors, value); } }
+		ObservableCollection<AgentColor> agentColors;
+		public ObservableCollection<AgentColor> AgentColors { get { return agentColors; } set { SetProperty (ref agentColors, value); } }
+
+		ObservableCollection<string> colors;
+		public ObservableCollection<string> Colors { get { return colors; } 
+			set { SetProperty (ref colors, value); } }
 
 		int shapeIndex;
-		public int ShapeIndex { get { return shapeIndex; } set { SetProperty (ref shapeIndex, value); } }
+		public int ShapeIndex { get { return shapeIndex; } 
+			set { SetProperty (ref shapeIndex, value); 
+				OnPropertyChanged (nameof (Shape));
+			} 
+		}
 
-		ObservableCollection<string> agentShapes;
-		public ObservableCollection<string> AgentShapes { get { return agentShapes; } 
-			set { SetProperty (ref agentShapes, value); } }
+		ObservableCollection<AgentShape> agentShapes;
+		public ObservableCollection<AgentShape> AgentShapes { get { return agentShapes; } set { SetProperty (ref agentShapes, value); } }
+
+		ObservableCollection<string> shapes;
+		public ObservableCollection<string> Shapes { get { return shapes; } 
+			set { SetProperty (ref shapes, value); } }
 
 		public SwarmViewModel() : this(new Swarm()) { }
 				
@@ -85,19 +94,23 @@ namespace SwarmSharp
 
 		void Initialize(){
 			EditSwarm = new Command (editSwarm);
-			AgentShapes = new ObservableCollection<string> ();
-			AgentColors = new ObservableCollection<string> ();
+			Shapes = new ObservableCollection<string> ();
+			Colors = new ObservableCollection<string> ();
+			AgentShapes = new ObservableCollection<AgentShape> ();
+			AgentColors = new ObservableCollection<AgentColor> ();
 
 			foreach (var val in Enum.GetValues (typeof(AgentColor)).Cast<AgentColor> ().ToList ()) {
-				AgentColors.Add (val.ToString ());
+				Colors.Add (val.ToString ());
+				AgentColors.Add (val);
 			}
 			foreach (var val in Enum.GetValues (typeof(AgentShape)).Cast<AgentShape> ().ToList ()) {
-				AgentShapes.Add (val.ToString ());
+				Shapes.Add (val.ToString ());
+				AgentShapes.Add (val);
 			}
 
 			var random = new Random ();
-			ColorIndex = random.Next (AgentColors.Count);
-			ShapeIndex = random.Next (AgentShapes.Count);			
+			ColorIndex = random.Next (Colors.Count);
+			ShapeIndex = random.Next (Shapes.Count);			
 		}
 
 		void editSwarm () {
